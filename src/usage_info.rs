@@ -31,8 +31,9 @@ Options:
     <JSON>              ❍ A valid JSON string of an object containing keys:
                           `block`    ➔ The EOS block header.
                           `actions`  ➔ An array of all the actions retired in
-                                       that block, indcluding the `onblock`
-                                       action plus ALL the action receipts.
+                                       the block in question.
+                          `receipts` ➔ An array of all the action receipts
+                                       pertaining to the block in question.
 
     <PATH>              ❍ Path to a file containing the valid <JSON> string
                           described above.
