@@ -2,6 +2,7 @@ pub mod state;
 pub mod types;
 pub mod error;
 pub mod constants;
+pub mod test_utils;
 pub mod usage_info;
 pub mod parse_cli_args;
 pub mod parse_input_json;
