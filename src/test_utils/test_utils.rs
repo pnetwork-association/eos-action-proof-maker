@@ -4,6 +4,7 @@ use std::{
 };
 use crate::{
     error::AppError,
+    parse_input_json::parse_eos_input_json_string,
     types::{
         Result,
         EosInputJson,
@@ -22,6 +23,12 @@ pub fn get_sample_submission_string() -> Result<String> {
     }
 }
 
+pub fn get_sample_submission_json() -> Result<EosInputJson> {
+     parse_eos_input_json_string(
+         &get_sample_submission_string()?
+     )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -29,7 +36,14 @@ mod tests {
     #[test]
     fn should_get_sample_submission_json_string() {
         if let Err(e) = get_sample_submission_string() {
-            panic!("Error getting submission string sample: {}", e)
+            panic!("Error getting sample submission string: {}", e)
+        }
+    }
+
+    #[test]
+    fn should_get_sample_eos_json() {
+        if let Err(e) = get_sample_submission_json() {
+            panic!("Error getting sample submission json: {}", e)
         }
     }
 }
