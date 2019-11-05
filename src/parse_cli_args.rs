@@ -10,6 +10,7 @@ use crate::{
     usage_info::USAGE_INFO,
 };
 
+#[allow(non_snake_case)]
 #[derive(Clone, Debug, PartialEq, Deserialize)]
 pub struct CliArgs {
     pub arg_JSON: String,
