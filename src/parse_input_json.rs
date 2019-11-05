@@ -7,7 +7,7 @@ use crate::{
     },
 };
 
-fn parse_eos_input_json_string(
+pub fn parse_eos_input_json_string(
     eos_input_json_string: &String
 ) -> Result<EosInputJson> {
     match serde_json::from_str(&eos_input_json_string) {
