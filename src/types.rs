@@ -3,6 +3,7 @@ use crate::{
     error::AppError
 };
 use eos_primitives::{
+    AuthSequences,
     Action as EosAction,
     ActionReceipt as EosActionReceipt,
 };
@@ -12,6 +13,7 @@ pub type EosActions = Vec<EosAction>;
 pub type EosActionJsons = Vec<EosActionJson>;
 pub type Result<T> = result::Result<T, AppError>;
 pub type EosActionReceipts = Vec<EosActionReceipt>;
+pub type AuthSequenceJsons = Vec<AuthSequenceJson>;
 pub type AuthorizationJsons = Vec<AuthorizationJson>;
 pub type EosActionReceiptJsons = Vec<EosActionReceiptJson>;
 
@@ -41,6 +43,19 @@ pub struct EosBlockJson {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct EosBlock {
+    pub block_id: Bytes,
+    pub previous: String,
+    pub producer: String,
+    //pub new_producers: serde_json::Value, // TODO: Handle! Could be null!
+    pub confirmed: usize,
+    pub schedule_version: usize,
+    //pub header_extensions: Vec<serde_json::Value>, // TODO: Handle! Could be null!
+    pub transaction_mroot: String,
+    pub action_mroot: String,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosActionJson {
     pub name: String,
     pub account: String,
@@ -56,12 +71,15 @@ pub struct AuthorizationJson {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct AuthSequenceJson(pub String, pub u64);
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosActionReceiptJson {
     pub receiver: String,
     pub act_digest: String,
     pub global_sequence: u64,
     pub recv_sequence:  u64,
-    pub auth_sequence: Vec<(String, u64)>,
+    pub auth_sequence: AuthSequenceJsons,
     pub code_sequence: usize,
     pub abi_sequence: usize,
 }

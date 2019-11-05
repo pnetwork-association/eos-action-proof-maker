@@ -3,15 +3,17 @@ use crate::{
     parse_cli_args::CliArgs,
     types::{
         Result,
+        EosBlock,
         EosActions,
-        EosActionReceipts,
         EosInputJson,
+        EosActionReceipts,
     },
 };
 
 #[derive(Debug)]
 pub struct State {
     pub cli_args: CliArgs,
+    pub eos_block: Option<EosBlock>,
     pub eos_actions: Option<EosActions>,
     pub eos_input_json: Option<EosInputJson>,
     pub eos_action_receipts: Option<EosActionReceipts>,
@@ -32,6 +34,7 @@ impl State {
         Ok(
             State {
                 cli_args,
+                eos_block: None,
                 eos_actions: None,
                 eos_input_json: None,
                 eos_action_receipts: None,
@@ -82,6 +85,28 @@ impl State {
             Some(actions) => Ok(actions),
             None => Err(AppError::Custom(
                 get_not_in_state_err("eos_actions")
+            ))
+        }
+    }
+
+    pub fn add_eos_block(mut self, eos_block: EosBlock) -> Result<Self> {
+        trace!("✔ Adding EOS actions to state!");
+        match self.eos_block {
+            Some(_) => Err(AppError::Custom(
+                get_no_overwrite_state_err("eos_block")
+            )),
+            None => {
+                self.eos_block = Some(eos_block);
+                Ok(self)
+            }
+        }
+    }
+
+    pub fn get_eos_block(&self) -> Result<&EosBlock> {
+        match &self.eos_block {
+            Some(actions) => Ok(actions),
+            None => Err(AppError::Custom(
+                get_not_in_state_err("eos_block")
             ))
         }
     }
