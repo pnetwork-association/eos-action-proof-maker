@@ -17,6 +17,7 @@ pub fn parse_eos_input_json_string(
 }
 
 pub fn parse_input_json_string_and_put_in_state(state: State) -> Result<State> {
+    trace!("✔ Parsing input json...");
     parse_eos_input_json_string(&state.cli_args.arg_JSON)
         .and_then(|eos_input_json| state.add_eos_input_json(eos_input_json))
 }
