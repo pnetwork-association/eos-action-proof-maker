@@ -18,6 +18,7 @@ use crate::{
 
 fn main() {
     match parse_cli_args_and_put_in_state()
+        .and_then(initialize_logger)
         .and_then(parse_input_json_string_and_put_in_state)
         {
             Ok(state) => {
