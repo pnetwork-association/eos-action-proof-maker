@@ -9,6 +9,7 @@ pub enum AppError {
     Custom(String),
     IOError(std::io::Error),
     HexError(hex::FromHexError),
+    EosPrimitivesNamesError(eos_primitives::ParseNameError),
 }
 
 impl fmt::Display for AppError {
@@ -20,6 +21,8 @@ impl fmt::Display for AppError {
                 format!("✘ Hex Error!\n✘ {}", e),
             AppError::IOError(ref e) =>
                 format!("✘ I/O Error!\n✘ {}", e),
+            AppError::EosPrimitivesNamesError(ref e) =>
+                format!("✘ Eos Primitives Names Error!\n✘ {:?}", e),
         };
         f.write_fmt(format_args!("{}", msg))
     }
@@ -34,5 +37,11 @@ impl From<hex::FromHexError> for AppError {
 impl From<std::io::Error> for AppError {
     fn from(e: std::io::Error) -> AppError {
         AppError::IOError(e)
+    }
+}
+
+impl From<eos_primitives::ParseNameError> for AppError {
+    fn from(e: eos_primitives::ParseNameError) -> AppError {
+        AppError::EosPrimitivesNamesError(e)
     }
 }
