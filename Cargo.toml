@@ -1,7 +1,8 @@
 [package]
-name = "eos-action-proof-maker"
+name = "eos_action_proof_maker"
 version = "0.1.0"
 authors = ["Greg Kapka <greg@oraclize.it>"]
 edition = "2018"
 
 [dependencies]
+docopt = "1.1.0"

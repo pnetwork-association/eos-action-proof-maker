@@ -64,5 +64,5 @@ __`❍ cargo test`__
 
 ### :black_nib: To Do:
 
-- [ ]
+- [ ] Proof verifier? Though note that a proof simple hashed up the hash in the last position of the proof array.
 
