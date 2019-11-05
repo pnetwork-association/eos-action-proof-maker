@@ -8,14 +8,16 @@ use eos_primitives::{
 };
 
 pub type EosActions = Vec<EosAction>;
+pub type EosActionJsons = Vec<EosActionJson>;
 pub type Result<T> = result::Result<T, AppError>;
 pub type EosActionReceipts = Vec<EosActionReceipt>;
+pub type EosActionReceiptJsons = Vec<EosActionReceiptJson>;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosInputJson {
     pub block: EosBlockJson,
-    pub actions: Vec<EosActionJson>,
-    pub action_receipts: Vec<EosActionReceiptJson>,
+    pub actions: EosActionJsons,
+    pub action_receipts: EosActionReceiptJsons,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
