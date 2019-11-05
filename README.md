@@ -64,5 +64,6 @@ __`❍ cargo test`__
 
 ### :black_nib: To Do:
 
+- [ ] Add more tests!
+- [ ] Correct the EOS primitives path in the json.
 - [ ] Proof verifier? Though note that a proof simple hashed up the hash in the last position of the proof array.
-
