@@ -8,6 +8,8 @@ use crate::{
         EosInputJson,
     },
 };
+
+#[derive(Debug)]
 pub struct State {
     pub cli_args: CliArgs,
     pub eos_actions: Option<EosActions>,
