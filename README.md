@@ -51,6 +51,11 @@ You'll find your binary in the __`./target/release`__ directory!
  - This tool __DOES NOT__ validate the action's individual fields with respect to that action's hex data. It simply extracts the latter for use in making the __`merkle-tree`__.
 
  - The tool __DOES__ validate that the supplied __`actions`__ all merkle together to create the __`action_mroot`__ in the block supplied. If this validation step does not pass, the proof will not be generated.
+<!--
+ - The tool __DOES__ validate that the action at the desired index serializes to the correct data that forms a leaf of the merkle tree. <!-- Well, it will do eventually!
+
+ - The tool __DOSE__ validate that the action at the desired index serializes to the correct __`action_digest`__ in the relevant __`action_receipt`__.
+-->
 
 ***
 
@@ -75,3 +80,5 @@ __`❍ cargo test`__
 - [ ] Proof verifier? Though note that a proof simple hashed up the hash in the last position of the proof array.
 - [ ] Validate the block header too?
 - [ ] Validate the individual actions too?
+- [ ] Validate the action at the supplied index w/r/t to it's hex data!!
+- [ ] Figure out how to parse the data in an action that's a contract creation in order to validate it!
