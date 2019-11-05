@@ -4,6 +4,7 @@ use std::{
     fs::read_to_string,
 };
 
+#[derive(Debug)]
 pub enum AppError {
     Custom(String),
     IOError(std::io::Error),
