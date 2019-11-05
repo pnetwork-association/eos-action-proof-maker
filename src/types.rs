@@ -13,9 +13,9 @@ pub type EosActionReceipts = Vec<EosActionReceipt>;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosInputJson {
-    pub eos_block: String, // TODO When we know the type better!
-    pub eos_actions: Vec<EosActionJson>,
-    pub eos_action_receipts: Vec<EosActionReceiptJson>,
+    pub block: String, // TODO When we know the type better!
+    pub actions: Vec<EosActionJson>,
+    pub action_receipts: Vec<EosActionReceiptJson>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
