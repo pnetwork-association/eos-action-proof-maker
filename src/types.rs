@@ -7,10 +7,12 @@ use eos_primitives::{
     ActionReceipt as EosActionReceipt,
 };
 
+pub type Bytes = Vec<u8>;
 pub type EosActions = Vec<EosAction>;
 pub type EosActionJsons = Vec<EosActionJson>;
 pub type Result<T> = result::Result<T, AppError>;
 pub type EosActionReceipts = Vec<EosActionReceipt>;
+pub type AuthorizationJsons = Vec<AuthorizationJson>;
 pub type EosActionReceiptJsons = Vec<EosActionReceiptJson>;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -43,7 +45,8 @@ pub struct EosActionJson {
     pub name: String,
     pub account: String,
     pub data: serde_json::Value, // NOTE: Could be hex string, or contract data!
-    pub authorization: Vec<AuthorizationJson>,
+    pub hex_data: Option<String>,
+    pub authorization: AuthorizationJsons,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
