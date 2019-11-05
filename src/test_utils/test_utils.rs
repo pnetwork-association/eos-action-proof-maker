@@ -28,8 +28,8 @@ mod tests {
 
     #[test]
     fn should_get_sample_submission_json_string() {
-        let result = get_sample_submission_string()
-            .unwrap();
-        println!("{}",result);
+        if let Err(e) = get_sample_submission_string() {
+            panic!("Error getting submission string sample: {}", e)
+        }
     }
 }
