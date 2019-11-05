@@ -46,7 +46,11 @@ You'll find your binary in the __`./target/release`__ directory!
 
 &nbsp;
 
-This tool does __NOT__ validate the block header of the passed in block! It only validates that the actions are committed to via the block's __`action_mroot`__ and then creates the requested proof!
+ - This tool does __DOES NOT__ validate the block header of the passed in block.
+
+ - This tool __DOES NOT__ validate the action's individual fields with respect to that action's hex data. It simply extracts the latter for use in making the __`merkle-tree`__.
+
+ - The tool __DOES__ validate that the supplied __`actions`__ all merkle together to create the __`action_mroot`__ in the block supplied. If this validation step does not pass, the proof will not be generated.
 
 ***
 
@@ -70,3 +74,4 @@ __`❍ cargo test`__
 - [ ] Correct the EOS primitives path in the json.
 - [ ] Proof verifier? Though note that a proof simple hashed up the hash in the last position of the proof array.
 - [ ] Validate the block header too?
+- [ ] Validate the individual actions too?
