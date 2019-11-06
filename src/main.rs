@@ -4,6 +4,7 @@ pub mod error;
 pub mod constants;
 pub mod test_utils;
 pub mod usage_info;
+pub mod verify_proof;
 pub mod validate_index;
 pub mod generate_proof;
 pub mod parse_cli_args;
@@ -19,6 +20,8 @@ pub mod parse_eos_action_receipts;
 #[macro_use] extern crate serde_derive;
 
 use crate::{
+    types::Result,
+    verify_proof::verify_proof_in_state,
     initialize_logger::initialize_logger,
     validate_index::validate_index_is_in_range,
     parse_cli_args::parse_cli_args_and_put_in_state,
@@ -30,7 +33,7 @@ use crate::{
     parse_eos_action_receipts::parse_eos_action_receipt_jsons_and_put_in_state,
 };
 
-fn main() {
+fn main() -> Result<()> {
     match parse_cli_args_and_put_in_state()
         .and_then(initialize_logger)
         .and_then(parse_input_json_string_and_put_in_state)
@@ -40,10 +43,14 @@ fn main() {
         .and_then(validate_index_is_in_range)
         .and_then(validate_action_receipt_merkle_root)
         .and_then(generate_proof_and_add_to_state)
+        .and_then(verify_proof_in_state)
         {
             Ok(state) => {
-                println!("{:?}", state)
-            },
+                let proof = state.get_merkle_proof()?;
+                trace!("{:?}", proof);
+                println!("{:?}", proof);
+                Ok(())
+            }
             Err(e) => {
                 error!("{}", e);
                 println!("{}", e);
