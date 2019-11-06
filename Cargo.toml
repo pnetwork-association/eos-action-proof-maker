@@ -1,0 +1,17 @@
+[package]
+name = "eos_action_proof_maker"
+version = "0.1.0"
+authors = ["Greg Kapka <greg@oraclize.it>"]
+edition = "2018"
+
+[dependencies]
+hex = "0.3.2"
+log = "0.4.8"
+docopt = "1.1.0"
+chrono = "0.4.9"
+simplelog = "0.7.3"
+serde_json = "1.0.40"
+bitcoin_hashes = "0.7.0"
+serde_derive = "1.0.101"
+serde = { version = "1", features = ["derive"] }
+eos-primitives = { path = "../rust-eos/primitives" } # FIXME: Correct path!
