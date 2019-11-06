@@ -48,7 +48,7 @@ fn is_canonical_left(hash: &Bytes) -> bool {
 }
 
 fn is_canonical_right(hash: &Bytes) -> bool {
-    hash[0] & 0b1000_0000 == 0b1000_0000
+    !is_canonical_left(hash)
 }
 
 fn make_canonical_pair(l: Bytes, r: Bytes) -> CanonicalPair {
@@ -100,7 +100,12 @@ pub fn generate_merkle_proof(
     let mut proof = Vec::new();
     proof.push(hex::encode(leaves[index].clone()));
     match index < leaves.len() {
-        false => Err(AppError::Custom("✘ Index out of bounds!".to_string())),
+        false => Err(AppError::Custom(
+            format!(
+                "✘ Error generating merkle proof!\n{}",
+                "✘ Index out of bounds!"
+            )
+        )),
         true => {
             while leaves.len() > 1 {
                 if leaves.len() % 2 != 0 {
@@ -143,7 +148,7 @@ pub fn generate_merkle_proof(
     }
 }
 
-pub fn verify_merkle_proof(merkle_proof: MerkleProof) -> Result<bool> {
+pub fn verify_merkle_proof(merkle_proof: &MerkleProof) -> Result<bool> {
     let mut leaves = Vec::new();
     for i in 0..merkle_proof.len() {
         leaves.push(hex::decode(merkle_proof[i].clone())?)
@@ -151,15 +156,9 @@ pub fn verify_merkle_proof(merkle_proof: MerkleProof) -> Result<bool> {
     let mut node = leaves[0].clone();
     for i in 1..leaves.len() - 1 {
         if is_canonical_right(&leaves[i]) {
-            node = hash_canonical_pair((
-                node,
-                leaves[i].clone()
-            )).to_vec();
+            node = make_and_hash_canonical_pair(node, leaves[i].clone());
         } else {
-            node = hash_canonical_pair((
-                leaves[i].clone(),
-                node
-            )).to_vec();
+            node = make_and_hash_canonical_pair(leaves[i].clone(), node);
         }
     }
     Ok(Some(&node) == leaves.last())
@@ -595,7 +594,7 @@ mod tests {
         let digests = get_sample_action_digests();
         let proof = generate_merkle_proof(index, digests)
             .unwrap();
-        let result = verify_merkle_proof(proof)
+        let result = verify_merkle_proof(&proof)
             .unwrap();
         assert!(result);
     }
