@@ -5,6 +5,7 @@ use crate::{
         Result,
         EosBlock,
         EosActions,
+        MerkleProof,
         EosInputJson,
         EosActionReceipts,
     },
@@ -15,6 +16,7 @@ pub struct State {
     pub cli_args: CliArgs,
     pub eos_block: Option<EosBlock>,
     pub eos_actions: Option<EosActions>,
+    pub merkle_proof: Option<MerkleProof>,
     pub eos_input_json: Option<EosInputJson>,
     pub eos_action_receipts: Option<EosActionReceipts>,
 }
@@ -36,6 +38,7 @@ impl State {
                 cli_args,
                 eos_block: None,
                 eos_actions: None,
+                merkle_proof: None,
                 eos_input_json: None,
                 eos_action_receipts: None,
             }
@@ -107,6 +110,31 @@ impl State {
             Some(actions) => Ok(actions),
             None => Err(AppError::Custom(
                 get_not_in_state_err("eos_block")
+            ))
+        }
+    }
+
+    pub fn add_merkle_proof(
+        mut self,
+        merkle_proof: MerkleProof
+    ) -> Result<Self> {
+        trace!("✔ Adding mekle proof to state!");
+        match self.merkle_proof {
+            Some(_) => Err(AppError::Custom(
+                get_no_overwrite_state_err("merkle_proof")
+            )),
+            None => {
+                self.merkle_proof = Some(merkle_proof);
+                Ok(self)
+            }
+        }
+    }
+
+    pub fn get_merkle_proof(&self) -> Result<&MerkleProof> {
+        match &self.merkle_proof {
+            Some(proof) => Ok(proof),
+            None => Err(AppError::Custom(
+                get_not_in_state_err("merkle_proof")
             ))
         }
     }
