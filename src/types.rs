@@ -8,7 +8,8 @@ use eos_primitives::{
     ActionReceipt as EosActionReceipt,
 };
 
-pub type Bytes = Vec<u8>;
+pub type Byte = u8;
+pub type Bytes = Vec<Byte>;
 pub type EosActions = Vec<EosAction>;
 pub type EosActionJsons = Vec<EosActionJson>;
 pub type Result<T> = result::Result<T, AppError>;
