@@ -7,7 +7,7 @@ use crate::{
     },
 };
 
-fn parse_block_json(block_json: &EosBlockJson) -> Result<EosBlock> {
+pub fn parse_eos_block_json(block_json: &EosBlockJson) -> Result<EosBlock> {
     Ok(
         EosBlock {
             block_id: hex::decode(&block_json.block_id)?,
@@ -27,7 +27,7 @@ pub fn parse_eos_block_and_put_in_state(state: State) -> Result<State> {
     trace!("✔ Parsing EOS block...");
     state
         .get_eos_input_json()
-        .and_then(|json| parse_block_json(&json.block))
+        .and_then(|json| parse_eos_block_json(&json.block))
         .and_then(|eos_block| state.add_eos_block(eos_block))
 }
 
@@ -40,7 +40,7 @@ mod tests {
     fn should_parse_eos_block_json() {
         let json = get_sample_submission_json()
             .unwrap();
-        if let Err(e) = parse_block_json(&json.block) {
+        if let Err(e) = parse_eos_block_json(&json.block) {
             panic!("Error parsing EOS block: {}", e)
         }
     }

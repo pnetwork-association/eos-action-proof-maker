@@ -72,7 +72,7 @@ fn parse_eos_action_receipt_json(
     )
 }
 
-fn parse_action_receipt_jsons(
+pub fn parse_action_receipt_jsons(
     eos_action_receipt_jsons: &EosActionReceiptJsons
 ) -> Result<EosActionReceipts> {
     eos_action_receipt_jsons
