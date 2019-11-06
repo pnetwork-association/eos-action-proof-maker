@@ -3,7 +3,6 @@ use crate::{
     error::AppError
 };
 use eos_primitives::{
-    AuthSequences,
     Action as EosAction,
     ActionReceipt as EosActionReceipt,
 };

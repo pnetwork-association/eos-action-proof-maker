@@ -13,13 +13,13 @@ retirement in a given block.
 
 Usage:
         eos_action_proof_maker [--help]
-        eos_action_proof_maker generate_proof (<JSON> | --file=<PATH>) <INDEX>
+        eos_action_proof_maker generate (<JSON> | --file=<PATH>) <INDEX>
 
 Options:
 
     --help              ❍ Show this message.
 
-    generate_proof      ❍ Command to generate a merkle-proof for the action at
+    generate            ❍ Command to generate a merkle-proof for the action at
                           the given INDEX in the supplied EOS block. Returns an
                           array of hex-string digests forming the branch of the
                           merkle-tree connecting the action-digest at INDEX

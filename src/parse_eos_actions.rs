@@ -14,14 +14,10 @@ use crate::{
 };
 use eos_primitives::{
     ActionName,
-    Checksum256,
     AccountName,
-    AuthSequence,
-    AuthSequences,
     PermissionLevel,
     PermissionLevels,
     Action as EosAction,
-    ActionReceipt as EosActionReceipt,
 };
 
 fn parse_authorization_json(

@@ -63,7 +63,7 @@ fn concatenate_canonical_pair(mut pair: CanonicalPair) -> Bytes {
     pair.0
 }
 
-fn hash_canonical_pair(mut pair: CanonicalPair) -> Sha256Hash {
+fn hash_canonical_pair(pair: CanonicalPair) -> Sha256Hash {
     sha256::Hash::hash(&concatenate_canonical_pair(pair))
 }
 
@@ -168,27 +168,13 @@ pub fn verify_merkle_proof(merkle_proof: &MerkleProof) -> Result<bool> {
 mod tests {
     use hex;
     use super::*;
-    use std::{
-        convert::TryInto,
-        str::{
-            FromStr,
-            from_utf8,
-        },
-    };
+    use std::str::FromStr;
     use eos_primitives::{
-        Read,
-        Write,
-        Asset,
         Action,
-        NumBytes,
         ActionName,
-        Checksum256,
         AccountName,
-        TestReceipt,
         AuthSequence,
-        name_to_utf8,
         ActionReceipt,
-        AuthSequences,
         SerializeData,
         PermissionName,
         PermissionLevel,
@@ -356,7 +342,6 @@ mod tests {
     #[test]
     fn canonical_left_hash_should_be_canonical_left() {
         let hash = get_expected_digest_bytes_1();
-        let expected_first_byte = 0b1001_0011;
         let canonical_left_hash = make_canonical_left(hash.clone());
         let is_left = is_canonical_left(&canonical_left_hash);
         let is_right = is_canonical_right(&canonical_left_hash);
