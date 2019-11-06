@@ -4,10 +4,14 @@ use std::{
 };
 use crate::{
     error::AppError,
+    parse_eos_block::parse_eos_block_json,
     parse_input_json::parse_eos_input_json_string,
+    parse_eos_action_receipts::parse_action_receipt_jsons,
     types::{
         Result,
+        EosBlock,
         EosInputJson,
+        EosActionReceipts,
     },
 };
 
@@ -29,6 +33,16 @@ pub fn get_sample_submission_json() -> Result<EosInputJson> {
      )
 }
 
+pub fn get_sample_eos_block() -> Result<EosBlock> {
+    get_sample_submission_json()
+        .and_then(|json| parse_eos_block_json(&json.block))
+}
+
+pub fn get_sample_action_receipts() -> Result<EosActionReceipts> {
+    get_sample_submission_json()
+        .and_then(|json| parse_action_receipt_jsons(&json.action_receipts))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -44,6 +58,13 @@ mod tests {
     fn should_get_sample_eos_json() {
         if let Err(e) = get_sample_submission_json() {
             panic!("Error getting sample submission json: {}", e)
+        }
+    }
+
+    #[test]
+    fn should_get_sample_action_receipts() {
+        if let Err(e) = get_sample_action_receipts() {
+            panic!("Error getting sample action receipts: {}", e)
         }
     }
 }
