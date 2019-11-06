@@ -7,14 +7,17 @@ use crate::{
     parse_eos_block::parse_eos_block_json,
     parse_input_json::parse_eos_input_json_string,
     parse_eos_action_receipts::parse_action_receipt_jsons,
+    generate_proof::generate_merkle_proof_from_action_receipts,
     types::{
         Result,
         EosBlock,
+        MerkleProof,
         EosInputJson,
         EosActionReceipts,
     },
 };
 
+pub const MERKLE_PROOF_INDEX: usize = 3;
 pub const SAMPLE_SUBMISSION_JSON_PATH: &str =
 "src/test_utils/sample-submission-json";
 
@@ -41,6 +44,16 @@ pub fn get_sample_eos_block() -> Result<EosBlock> {
 pub fn get_sample_action_receipts() -> Result<EosActionReceipts> {
     get_sample_submission_json()
         .and_then(|json| parse_action_receipt_jsons(&json.action_receipts))
+}
+
+pub fn get_sample_merkle_proof() -> Result<MerkleProof> {
+    get_sample_action_receipts()
+        .and_then(|receipts|
+            generate_merkle_proof_from_action_receipts(
+                &MERKLE_PROOF_INDEX,
+                &receipts,
+            )
+        )
 }
 
 #[cfg(test)]
