@@ -4,6 +4,7 @@ pub mod error;
 pub mod constants;
 pub mod test_utils;
 pub mod usage_info;
+pub mod validate_index;
 pub mod parse_cli_args;
 pub mod parse_eos_block;
 pub mod parse_input_json;
@@ -18,6 +19,7 @@ pub mod parse_eos_action_receipts;
 
 use crate::{
     initialize_logger::initialize_logger,
+    validate_index::validate_index_is_in_range,
     parse_cli_args::parse_cli_args_and_put_in_state,
     parse_eos_block::parse_eos_block_and_put_in_state,
     parse_input_json::parse_input_json_string_and_put_in_state,
@@ -33,6 +35,7 @@ fn main() {
         .and_then(parse_eos_block_and_put_in_state)
         .and_then(parse_eos_action_jsons_and_put_in_state)
         .and_then(parse_eos_action_receipt_jsons_and_put_in_state)
+        .and_then(validate_index_is_in_range)
         .and_then(validate_action_receipt_merkle_root)
         {
             Ok(state) => {
