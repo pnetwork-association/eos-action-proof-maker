@@ -10,6 +10,7 @@ use eos_primitives::{
 
 pub type Byte = u8;
 pub type Bytes = Vec<Byte>;
+pub type MerkleProof = Vec<String>;
 pub type EosActions = Vec<EosAction>;
 pub type EosActionJsons = Vec<EosActionJson>;
 pub type Result<T> = result::Result<T, AppError>;

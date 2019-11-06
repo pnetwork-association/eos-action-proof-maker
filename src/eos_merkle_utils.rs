@@ -7,11 +7,11 @@ use crate::types::{
     Byte,
     Bytes,
     Result,
+    MerkleProof,
 };
 
 pub type CanonicalLeft = Bytes;
 pub type CanonicalRight = Bytes;
-pub type MerkleProof = Vec<String>;
 pub type Sha256Hash = bitcoin_hashes::sha256::Hash;
 pub type CanonicalPair = (CanonicalLeft, CanonicalRight);
 
