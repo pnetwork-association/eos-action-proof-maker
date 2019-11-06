@@ -172,6 +172,7 @@ dependencies = [
 name = "eos_action_proof_maker"
 version = "0.1.0"
 dependencies = [
+ "bitcoin_hashes 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "chrono 0.4.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "docopt 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "eos-primitives 0.1.0",

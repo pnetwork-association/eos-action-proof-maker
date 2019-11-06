@@ -11,6 +11,7 @@ docopt = "1.1.0"
 chrono = "0.4.9"
 simplelog = "0.7.3"
 serde_json = "1.0.40"
+bitcoin_hashes = "0.7.0"
 serde_derive = "1.0.101"
 serde = { version = "1", features = ["derive"] }
 eos-primitives = { path = "../rust-eos/primitives" } # FIXME: Correct path!
