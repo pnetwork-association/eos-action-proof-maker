@@ -4,6 +4,18 @@
 
 A tool for making __`merkle-proofs`__ for proving action retirement in an __`EOS`__ block!
 
+***
+
+&nbsp;
+
+### :biohazard: Important Caveat:
+
+One key Dan Larrimer quote:
+
+> Given an action, somewhere in the [EOS] blockchain, it is possible to succinctly prove the retirement of that action by first proving that it was committed to by a block’s Action Root, and then that the given block was committed to by a trusted irreversible block header’s Block Root.
+
+...found in __[this article here](https://steemit.com/eos/@dan/inter-blockchain-communication-via-merkle-proofs-with-eos-io)__ and which article I've attempted to archive via the __[WayBackMachine](https://web.archive.org/web/20191112104752/https://steemit.com/eos/@dan/inter-blockchain-communication-via-merkle-proofs-with-eos-io)__ to no avail due presumably to something on Steemit's end...and so but however back on point the quote above is verbatim and points out the thorny issue that no EOS __`action`__ can be proven to have been __irreversibly__ retired _without_ trust. Tying the __`action`__'s retirement to an _irreversible_ block requires that that _irreversible_ block is a trusted one.
+
 &nbsp;
 
 ***
@@ -86,11 +98,17 @@ You'll find your binary in the __`./target/release/`__ directory.
 
 ### :black_nib: Notes
 
- - This tool does __DOES NOT__ validate the block header of the passed in block.
+ - This tool does __DOES NOT__ (yet) validate the block header of the passed in block.
 
- - This tool __DOES NOT__ validate the action's individual fields with respect to that action's hex data. It simply extracts the latter for use in making the __`merkle-tree`__.
+ - This tool __DOES NOT__ (yet) validate the action's individual fields with respect to that action's hex data. It simply extracts the latter for use in making the __`merkle-tree`__.
 
- - The tool __DOES__ validate that the supplied __`actions`__ all merkle together to create the __`action_mroot`__ in the block supplied. If this validation step does not pass, the proof will not be generated.
+ - The tool __DOES__ validate that the supplied __`actions`__ all merkle together to create the __`action_mroot`__ in the block supplied. If this validation step does not pass, the proof will not be generated and instead the tool will exit with code __`1`__ and return:
+
+```
+✘ Error validating action receipts!
+✘ Action receipt merkle root does NOT match `action_mroot`!
+```
+
 <!--
  - The tool __DOES__ validate that the action at the desired index serializes to the correct data that forms a leaf of the merkle tree. <!-- Well, it will do eventually!
 
@@ -115,9 +133,10 @@ __`❍ cargo test`__
 
 ### :black_nib: To Do:
 
+- [x] Verify proof as last step before emitting proof.
 - [ ] Add more tests!
-- [ ] Correct the EOS primitives path in the json.
-- [ ] Proof verifier? Though note that a proof simple hashed up the hash in the last position of the proof array.
+- [ ] Correct the EOS primitives path in the __`Cargo.toml`__.
+- [ ] Proof verifier CLI option? (Logic already in place for verification).
 - [ ] Validate the block header too?
 - [ ] Validate the individual actions too?
 - [ ] Validate the action at the supplied index w/r/t to it's hex data!!
