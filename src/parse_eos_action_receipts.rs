@@ -52,7 +52,7 @@ fn parse_eos_action_receipt_json(
         EosActionReceipt {
             abi_sequence: eos_action_receipt_json.abi_sequence,
             code_sequence: eos_action_receipt_json.code_sequence,
-            receiver: AccountName::from_str(
+            name: AccountName::from_str(
                 &eos_action_receipt_json
                     .receiver
             )?,
