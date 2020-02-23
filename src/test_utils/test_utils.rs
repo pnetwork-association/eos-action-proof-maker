@@ -18,12 +18,12 @@ use crate::{
 };
 
 pub const MERKLE_PROOF_INDEX: usize = 3;
-pub const SAMPLE_SUBMISSION_JSON_PATH: &str =
-"src/test_utils/sample-submission-json";
+pub const SAMPLE_BLOCK_JSON_PATH: &str =
+    "src/test_utils/sample-block.json";
 
 pub fn get_sample_submission_string() -> Result<String> {
-    match Path::new(&SAMPLE_SUBMISSION_JSON_PATH).exists() {
-        true => Ok(read_to_string(SAMPLE_SUBMISSION_JSON_PATH)?),
+    match Path::new(&SAMPLE_BLOCK_JSON_PATH).exists() {
+        true => Ok(read_to_string(SAMPLE_BLOCK_JSON_PATH)?),
         false => Err(AppError::Custom(
             format!("✘ Cannot find sample-submission-json file!")
         ))
@@ -31,9 +31,7 @@ pub fn get_sample_submission_string() -> Result<String> {
 }
 
 pub fn get_sample_submission_json() -> Result<EosInputJson> {
-     parse_eos_input_json_string(
-         &get_sample_submission_string()?
-     )
+     parse_eos_input_json_string(&get_sample_submission_string()?)
 }
 
 pub fn get_sample_eos_block() -> Result<EosBlock> {

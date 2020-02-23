@@ -96,7 +96,7 @@ mod tests {
 
     #[test]
     fn should_parse_action_receipt_jsons() {
-        let expected_num_receipts = 7;
+        let expected_num_receipts = 4;
         let json = get_sample_submission_json()
             .unwrap();
         let result = parse_action_receipt_jsons(&json.action_receipts)
