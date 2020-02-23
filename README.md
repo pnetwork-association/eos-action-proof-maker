@@ -74,6 +74,24 @@ Options:
 
 &nbsp;
 
+### :microscope: Example
+
+If you go and look in the __`/example`__ directory you'll find a sample __EOS__ block __JSON__ & a shell script you can run to see how the tool works. Run it via: __`❍ ./example.sh`__. The built binary it's calling is in the __`/bin`__ folder and has a __`sha256sum`__ of __`6e9f0b50d847e4c6e9a65f04d8e0893b627c9bcc069ca2a4a736e7796716be5c`__.
+
+Output of example:
+
+```
+
+
+
+```
+
+&nbsp;
+
+***
+
+&nbsp;
+
 ### :wrench: Build
 
 To build this yourself, make sure you have __`Rust`__ installed then clone the dir:
