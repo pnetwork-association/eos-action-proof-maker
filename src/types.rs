@@ -19,6 +19,39 @@ pub type AuthorizationJsons = Vec<AuthorizationJson>;
 pub type EosActionReceiptJsons = Vec<EosActionReceiptJson>;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Output {
+    pub block_id: String,
+    pub action_index: usize,
+    pub merkle_proof: MerkleProof,
+    pub action_digest: String,
+    pub serialized_action: String,
+    pub action_receipt_digest: String,
+    pub serialized_action_receipt: String,
+}
+
+impl Output {
+    pub fn new(
+        block_id: String,
+        action_index: usize,
+        merkle_proof: MerkleProof,
+        action_digest: String,
+        serialized_action: String,
+        action_receipt_digest: String,
+        serialized_action_receipt: String,
+    ) -> Self {
+        Output {
+            block_id,
+            action_index,
+            merkle_proof,
+            action_digest,
+            serialized_action,
+            action_receipt_digest,
+            serialized_action_receipt,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosInputJson {
     pub block: EosBlockJson,
     pub actions: EosActionJsons,
@@ -28,19 +61,19 @@ pub struct EosInputJson {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosBlockJson {
     pub block_id: String,
-    pub block_num: u64,
+    pub timestamp: String,
     pub producer: String,
     pub confirmed: usize,
     pub previous: String,
-    pub timestamp: String,
     pub action_mroot: String,
-    pub schedule_version: usize,
     pub transaction_mroot: String,
-    pub producer_signature: String,
+    pub schedule_version: usize,
     pub new_producers: serde_json::Value,
-    pub transactions: Vec<serde_json::Value>, // TODO Real type for this!
-    pub block_extensions: Vec<serde_json::Value>,
-    pub header_extensions: Vec<serde_json::Value>,
+    pub header_extensions: Option<String>,//Vec<serde_json::Value>,
+    //pub block_num: u64,
+    //pub producer_signature: String,
+    //pub transactions: Vec<serde_json::Value>, // TODO Real type for this!
+    //pub block_extensions: Vec<serde_json::Value>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -48,10 +81,10 @@ pub struct EosBlock {
     pub block_id: Bytes,
     pub previous: String,
     pub producer: String,
-    //pub new_producers: serde_json::Value, // TODO: Handle! Could be null!
+    pub new_producers: serde_json::Value, // TODO: Handle! Could be null!
     pub confirmed: usize,
     pub schedule_version: usize,
-    //pub header_extensions: Vec<serde_json::Value>, // TODO: Handle! Could be null!
+    pub header_extensions: Option<String>,// Vec<serde_json::Value>, // TODO: Handle! Could be null!
     pub transaction_mroot: String,
     pub action_mroot: String,
 }

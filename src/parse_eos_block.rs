@@ -13,10 +13,10 @@ pub fn parse_eos_block_json(block_json: &EosBlockJson) -> Result<EosBlock> {
             block_id: hex::decode(&block_json.block_id)?,
             previous: block_json.previous.clone(),
             producer: block_json.producer.clone(),
-            //new_producers: serde_json::Value, // TODO: Handle! Could be null!
+            new_producers: serde_json::Value::Null, // TODO: Handle the null! Empty vec?
             confirmed: block_json.confirmed.clone(),
             schedule_version: block_json.schedule_version.clone(),
-            //header_extensions: Vec<serde_json::Value>, // NOTE: Ibid!
+            header_extensions: block_json.header_extensions.clone(),//Vec<serde_json::Value>, // NOTE: Ibid!
             transaction_mroot: block_json.transaction_mroot.clone(),
             action_mroot: block_json.action_mroot.clone(),
         }

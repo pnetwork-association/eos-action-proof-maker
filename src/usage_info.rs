@@ -13,7 +13,7 @@ retirement in a given block.
 
 Usage:
         eos_action_proof_maker [--help]
-        eos_action_proof_maker generate (<JSON> | --file=<PATH>) <INDEX>
+        eos_action_proof_maker generate <INDEX> (<JSON> | --file=<PATH>)
 
 Options:
 
@@ -29,11 +29,12 @@ Options:
                           its actions in the format described above.
 
     <JSON>              ❍ A valid JSON string of an object containing keys:
-                          `block`    ➔ The EOS block header.
-                          `actions`  ➔ An array of all the actions retired in
-                                       the block in question.
-                          `receipts` ➔ An array of all the action receipts
-                                       pertaining to the block in question.
+                          `block`           ➔ The EOS block header.
+                          `actions`         ➔ An array of all the actions
+                                              retired in the block in question.
+                          `action_receipts` ➔ An array of all the action
+                                              receipts pertaining to the block
+                                              in question.
 
     <PATH>              ❍ Path to a file containing the valid <JSON> string
                           described above.

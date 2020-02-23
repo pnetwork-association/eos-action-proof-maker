@@ -16,7 +16,7 @@ pub fn generate_merkle_proof_from_action_receipts(
         index.clone(),
         action_receipts
             .iter()
-            .map(|receipt| receipt.to_digest())
+            .map(|action_receipt| action_receipt.to_digest())
             .collect()
     )
 }

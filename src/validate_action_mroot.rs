@@ -20,7 +20,12 @@ fn get_merkle_digest_from_action_receipts(
     )
 }
 
-fn validate_merkle_digest(digest: &Bytes, action_mroot_hex: &String) -> Result<()> {
+fn check_merkle_digest(
+    digest: &Bytes,
+    action_mroot_hex: &String
+) -> Result<()> {
+    debug!("Digest      : {}", hex::encode(digest));
+    debug!("Action Mroot: {}", action_mroot_hex);
     match &hex::decode(action_mroot_hex)? == digest {
         true => Ok(()),
         false => Err(AppError::Custom(
@@ -33,11 +38,12 @@ fn validate_merkle_digest(digest: &Bytes, action_mroot_hex: &String) -> Result<(
 }
 
 pub fn validate_action_receipt_merkle_root(state: State) -> Result<State> {
+    info!("✔ Validating action-receipts merkle root...");
     state
         .get_eos_action_receipts()
         .map(get_merkle_digest_from_action_receipts)
         .and_then(|digest|
-             validate_merkle_digest(
+             check_merkle_digest(
                  &digest,
                  &state.get_eos_block()?.action_mroot
              )
@@ -74,7 +80,7 @@ mod tests {
         let valid_merkle_digests = get_merkle_digest_from_action_receipts(
             &action_receipts
         );
-        if let Err(e) = validate_merkle_digest(
+        if let Err(e) = check_merkle_digest(
             &valid_merkle_digests,
             &action_mroot_hex,
         ) {
@@ -92,7 +98,7 @@ mod tests {
         let valid_merkle_digests = get_merkle_digest_from_action_receipts(
             &action_receipts
         );
-        if let Ok(_) = validate_merkle_digest(
+        if let Ok(_) = check_merkle_digest(
             &valid_merkle_digests,
             &wrong_action_mroot_hex,
         ) {
