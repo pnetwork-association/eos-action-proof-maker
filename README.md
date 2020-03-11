@@ -76,7 +76,7 @@ Options:
 
 ### :microscope: Example
 
-If you go and look in the __`/example`__ directory you'll find a sample __EOS__ block __JSON__ & a shell script you can run to see how the tool works. Run it via: __`❍ ./example.sh`__.
+If you go and look in the __`/example`__ directory you'll find a sample __EOS__ block __JSON__ & a shell script you can run to see how the tool works. First build the tool via __`❍ cargo build --release`__ from the root of thise repo, then run the example in the __`examples`__ directory via: __`❍ ./example.sh`__.
 
 Output of example:
 
@@ -130,7 +130,7 @@ You'll find your binary in the __`./target/release/`__ directory.
 <!--
  - The tool __DOES__ validate that the action at the desired index serializes to the correct data that forms a leaf of the merkle tree. <!-- Well, it will do eventually!
 
- - The tool __DOSE__ validate that the action at the desired index serializes to the correct __`action_digest`__ in the relevant __`action_receipt`__.
+ - The tool __DOES__ validate that the action at the desired index serializes to the correct __`action_digest`__ in the relevant __`action_receipt`__.
 -->
 
 ***
@@ -152,7 +152,7 @@ __`❍ cargo test`__
 ### :black_nib: To Do:
 
 - [x] Verify proof as last step before emitting proof.
-- [ ] Add more tests!
+- [x] Add more tests!
 - [ ] Correct the EOS primitives path in the __`Cargo.toml`__.
 - [ ] Proof verifier CLI option? (Logic already in place for verification).
 - [ ] Validate the block header too?
