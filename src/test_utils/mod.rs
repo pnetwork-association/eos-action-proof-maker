@@ -41,6 +41,11 @@ pub fn get_sample_eos_block_n(n: usize) -> Result<EosBlock> {
 pub fn get_sample_action_receipts_n(n: usize) -> Result<EosActionReceipts> {
     get_sample_submission_json_n(n)
         .and_then(|json| parse_action_receipt_jsons(&json.action_receipts))
+        .map(|mut receipts| {
+             receipts
+                .sort_by(|a, b| a.global_sequence.cmp(&b.global_sequence));
+             receipts
+         })
 }
 
 pub fn get_sample_merkle_proof_n(n: usize) -> Result<MerkleProof> {
