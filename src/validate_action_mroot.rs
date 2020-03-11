@@ -55,14 +55,14 @@ pub fn validate_action_receipt_merkle_root(state: State) -> Result<State> {
 mod tests {
     use super::*;
     use crate::test_utils::{
+        NUM_SAMPLES,
         get_sample_eos_block_n,
         get_sample_action_receipts_n,
     };
 
     #[test]
     fn should_validate_digest_for_sample_blocks() {
-        let num_samples = 4;
-        vec![0u8; num_samples]
+        vec![0u8; NUM_SAMPLES]
             .iter()
             .enumerate()
             .map(|(i, _)| {
@@ -81,8 +81,7 @@ mod tests {
 
     #[test]
     fn should_validate_valid_merkle_digests() {
-        let num_samples = 4;
-        vec![0u8; num_samples]
+        vec![0u8; NUM_SAMPLES]
             .iter()
             .enumerate()
             .map(|(i, _)|{
