@@ -54,46 +54,62 @@ pub fn validate_action_receipt_merkle_root(state: State) -> Result<State> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_utils::test_utils::{
-        get_sample_eos_block,
-        get_sample_action_receipts,
+    use crate::test_utils::{
+        get_sample_eos_block_n,
+        get_sample_action_receipts_n,
     };
 
     #[test]
-    fn should_get_merkle_digest_from_eos_action_receipts() {
-        let expected_result = get_sample_eos_block()
-            .unwrap()
-            .action_mroot;
-        let action_receipts = get_sample_action_receipts()
-            .unwrap();
-        let result = get_merkle_digest_from_action_receipts(&action_receipts);
-        assert!(hex::encode(result) == expected_result);
+    fn should_validate_digest_for_sample_blocks() {
+        let num_samples = 4;
+        vec![0u8; num_samples]
+            .iter()
+            .enumerate()
+            .map(|(i, _)| {
+                let expected_result = get_sample_eos_block_n(i + 1)
+                    .unwrap()
+                    .action_mroot;
+                let action_receipts = get_sample_action_receipts_n(i + 1)
+                    .unwrap();
+                let result = get_merkle_digest_from_action_receipts(
+                    &action_receipts
+                );
+                assert_eq!(hex::encode(result), expected_result);
+            })
+            .for_each(drop);
     }
 
     #[test]
-    fn should_validate_valid_merkle_digest() {
-        let action_mroot_hex = get_sample_eos_block()
-            .unwrap()
-            .action_mroot;
-        let action_receipts = get_sample_action_receipts()
-            .unwrap();
-        let valid_merkle_digests = get_merkle_digest_from_action_receipts(
-            &action_receipts
-        );
-        if let Err(e) = check_merkle_digest(
-            &valid_merkle_digests,
-            &action_mroot_hex,
-        ) {
-            panic!("Should validate valid merkle digest: {}", e);
-        }
+    fn should_validate_valid_merkle_digests() {
+        let num_samples = 4;
+        vec![0u8; num_samples]
+            .iter()
+            .enumerate()
+            .map(|(i, _)|{
+                let action_mroot_hex = get_sample_eos_block_n(i + 1)
+                    .unwrap()
+                    .action_mroot;
+                let action_receipts = get_sample_action_receipts_n(i + 1)
+                    .unwrap();
+                let valid_digests = get_merkle_digest_from_action_receipts(
+                    &action_receipts
+                );
+                if let Err(e) = check_merkle_digest(
+                    &valid_digests,
+                    &action_mroot_hex,
+                ) {
+                    panic!("Should validate valid merkle digest: {}", e);
+                }
+            })
+            .for_each(drop);
     }
 
     #[test]
     fn should_err_when_validating_invalid_merkle_digest() {
-        let wrong_action_mroot_hex = get_sample_eos_block()
+        let wrong_action_mroot_hex = get_sample_eos_block_n(1)
             .unwrap()
             .transaction_mroot;
-        let action_receipts = get_sample_action_receipts()
+        let action_receipts = get_sample_action_receipts_n(1)
             .unwrap();
         let valid_merkle_digests = get_merkle_digest_from_action_receipts(
             &action_receipts
