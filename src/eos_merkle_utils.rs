@@ -220,10 +220,12 @@ mod tests {
                 12,
                 503081363,
                 10,
-                vec![AuthSequence::new(
-                    "eosio",
-                    61285932
-                ).unwrap()],
+                vec![
+                    AuthSequence::new(
+                        "eosio",
+                        61285932
+                    ).unwrap()
+                ],
             ).unwrap(),
             ActionReceipt::new(
                 "pokerpokerts",
@@ -232,10 +234,12 @@ mod tests {
                 4,
                 503081364,
                 30,
-                vec![AuthSequence::new(
-                    "pokerpokerts",
-                    241552
-                ).unwrap()],
+                vec![
+                    AuthSequence::new(
+                        "pokerpokerts",
+                        241552
+                    ).unwrap()
+                ],
             ).unwrap(),
             ActionReceipt::new(
                 "oracleoracle",
@@ -244,10 +248,12 @@ mod tests {
                 2,
                 503081365,
                 2,
-                vec![AuthSequence::new(
-                    "feeder111112",
-                    152730
-                ).unwrap()],
+                vec![
+                    AuthSequence::new(
+                        "feeder111112",
+                        152730
+                    ).unwrap()
+                ],
             ).unwrap(),
             ActionReceipt::new(
                 "dvmh1tbb1him",
@@ -256,10 +262,12 @@ mod tests {
                 2,
                 503081366,
                 1,
-                vec![AuthSequence::new(
-                    "dvmh1tbb1him",
-                    805667
-                ).unwrap()],
+                vec![
+                    AuthSequence::new(
+                        "dvmh1tbb1him",
+                        805667
+                    ).unwrap()
+                ],
             ).unwrap(),
         ]
     }

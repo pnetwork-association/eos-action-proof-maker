@@ -8,6 +8,7 @@ pub mod verify_proof;
 pub mod validate_index;
 pub mod generate_proof;
 pub mod parse_cli_args;
+pub mod generate_output;
 pub mod parse_eos_block;
 pub mod parse_input_json;
 pub mod eos_merkle_utils;
@@ -23,6 +24,7 @@ use crate::{
     types::Result,
     verify_proof::verify_proof_in_state,
     initialize_logger::initialize_logger,
+    generate_output::generate_output_string,
     validate_index::validate_index_is_in_range,
     parse_cli_args::parse_cli_args_and_put_in_state,
     generate_proof::generate_proof_and_add_to_state,
@@ -44,11 +46,11 @@ fn main() -> Result<()> {
         .and_then(validate_action_receipt_merkle_root)
         .and_then(generate_proof_and_add_to_state)
         .and_then(verify_proof_in_state)
+        .and_then(generate_output_string)
         {
-            Ok(state) => {
-                let proof = state.get_merkle_proof()?;
-                trace!("{:?}", proof);
-                println!("{:?}", proof);
+            Ok(output) => {
+                trace!("{}", output);
+                println!("{}", output);
                 Ok(())
             }
             Err(e) => {

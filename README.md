@@ -74,6 +74,24 @@ Options:
 
 &nbsp;
 
+### :microscope: Example
+
+If you go and look in the __`/example`__ directory you'll find a sample __EOS__ block __JSON__ & a shell script you can run to see how the tool works. First build the tool via __`❍ cargo build --release`__ from the root of thise repo, then run the example in the __`examples`__ directory via: __`❍ ./example.sh`__.
+
+Output of example:
+
+```
+
+{"block_id":"045c6ab34e94f3a671dc63fa0d8537568b5da349d710137b2b13fd36bf7070cb","action_index":2,"merkle_proof":["8c0d09a6ba747d3c717ac59d881b4027275e7928df4d88d463dd423d31214291","d87b5e6272240ebd9631e24af283bf08b66e45131e225467fa05fcb85819f812","407867c8c4e7c383d9f8050bb3f240e58aebf1deb900c8eff4392e3d3ac5b9a0","4b901ce6e4171a2eb57842a2d9ed7fda13f82c4f339ced90b3c6cc0cf7fd0ed5"],"action_digest":"d0a587d74ae1e48a7e36d427206251947163bbd9c501fbedc272e745464de353","serialized_action":"00a6823403ea3055000000572d3ccdcd0190b1ca2a1eb3e9ad00000000a8ed32324b90b1ca2a1eb3e9ad3021cd2a1eb3e9adaa2900000000000004454f53000000002a307835334332303438444144344643464142343463334546336431366538383242353137384446343262","action_receipt_digest":"8c0d09a6ba747d3c717ac59d881b4027275e7928df4d88d463dd423d31214291","serialized_action_receipt":"90b1ca2a1eb3e9add0a587d74ae1e48a7e36d427206251947163bbd9c501fbedc272e745464de3534fafaf2000000000f0070000000000000190b1ca2a1eb3e9ad94100000000000000504"}
+
+```
+
+&nbsp;
+
+***
+
+&nbsp;
+
 ### :wrench: Build
 
 To build this yourself, make sure you have __`Rust`__ installed then clone the dir:
@@ -112,7 +130,7 @@ You'll find your binary in the __`./target/release/`__ directory.
 <!--
  - The tool __DOES__ validate that the action at the desired index serializes to the correct data that forms a leaf of the merkle tree. <!-- Well, it will do eventually!
 
- - The tool __DOSE__ validate that the action at the desired index serializes to the correct __`action_digest`__ in the relevant __`action_receipt`__.
+ - The tool __DOES__ validate that the action at the desired index serializes to the correct __`action_digest`__ in the relevant __`action_receipt`__.
 -->
 
 ***
@@ -134,7 +152,7 @@ __`❍ cargo test`__
 ### :black_nib: To Do:
 
 - [x] Verify proof as last step before emitting proof.
-- [ ] Add more tests!
+- [x] Add more tests!
 - [ ] Correct the EOS primitives path in the __`Cargo.toml`__.
 - [ ] Proof verifier CLI option? (Logic already in place for verification).
 - [ ] Validate the block header too?

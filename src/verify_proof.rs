@@ -27,11 +27,11 @@ pub fn verify_proof_in_state(state: State) -> Result<State> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_utils::test_utils::get_sample_merkle_proof;
+    use crate::test_utils::get_sample_merkle_proof_n;
 
     #[test]
     fn should_verify_valid_merkle_proof() {
-        let proof = get_sample_merkle_proof()
+        let proof = get_sample_merkle_proof_n(1)
             .unwrap();
         if let Err(e) = verify_proof(&proof) {
             panic!("Should not error verifying valid proof {}", e);
@@ -40,7 +40,7 @@ mod tests {
 
     #[test]
     fn should_fail_to_verify_invalid_merkle_proof() {
-        let mut proof = get_sample_merkle_proof()
+        let mut proof = get_sample_merkle_proof_n(1)
             .unwrap();
         proof.remove(1);
         if let Ok(_) = verify_proof(&proof) {

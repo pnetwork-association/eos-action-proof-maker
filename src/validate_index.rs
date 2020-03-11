@@ -5,7 +5,7 @@ use crate::{
 };
 
 fn validate_index(index: &usize, num_action_receipts: &usize) -> Result<()> {
-    match index <= num_action_receipts {
+    match &(index + 1) <= num_action_receipts {
         true => Ok(()),
         false => Err(AppError::Custom(
             format!(

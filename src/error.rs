@@ -6,6 +6,7 @@ pub enum AppError {
     Custom(String),
     IOError(std::io::Error),
     HexError(hex::FromHexError),
+    SerdeJsonError(serde_json::error::Error),
     EosPrimitivesError(eos_primitives::error::Error),
     EosPrimitivesNamesError(eos_primitives::ParseNameError),
 }
@@ -19,6 +20,8 @@ impl fmt::Display for AppError {
                 format!("✘ Hex Error!\n✘ {}", e),
             AppError::IOError(ref e) =>
                 format!("✘ I/O Error!\n✘ {}", e),
+            AppError::SerdeJsonError(ref e) =>
+                format!("✘ Serde JSON error!\n✘ {}", e),
             AppError::EosPrimitivesError(ref e) =>
                 format!("✘ Eos Primitives Error!\n✘ {:?}", e),
             AppError::EosPrimitivesNamesError(ref e) =>
@@ -49,5 +52,11 @@ impl From<eos_primitives::ParseNameError> for AppError {
 impl From<eos_primitives::error::Error> for AppError {
     fn from(e: eos_primitives::error::Error) -> AppError {
         AppError::EosPrimitivesError(e)
+    }
+}
+
+impl From<serde_json::error::Error> for AppError {
+    fn from(e: serde_json::error::Error) -> AppError {
+        AppError::SerdeJsonError(e)
     }
 }
