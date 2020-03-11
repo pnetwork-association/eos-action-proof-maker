@@ -26,13 +26,13 @@ pub fn parse_input_json_string_and_put_in_state(state: State) -> Result<State> {
 mod tests {
     use super::*;
     use crate::{
-        test_utils::test_utils::get_sample_submission_string,
+        test_utils::get_sample_submission_string_n,
     };
 
     #[test]
     fn should_parse_input_json_string() {
         let expected_number_of_actions = 4;
-        let string = get_sample_submission_string()
+        let string = get_sample_submission_string_n(1)
             .unwrap();
         let result = parse_eos_input_json_string(&string)
             .unwrap();

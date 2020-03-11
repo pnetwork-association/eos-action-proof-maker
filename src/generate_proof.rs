@@ -36,25 +36,25 @@ pub fn generate_proof_and_add_to_state(state: State) -> Result<State> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_utils::test_utils::{
+    use crate::test_utils::{
         MERKLE_PROOF_INDEX,
-        get_sample_eos_block,
-        get_sample_merkle_proof,
-        get_sample_action_receipts,
+        get_sample_eos_block_n,
+        get_sample_merkle_proof_n,
+        get_sample_action_receipts_n,
     };
 
     #[test]
     fn should_generate_merkle_proof_from_actions_receipts() {
-        let expected_action_mroot = get_sample_eos_block()
+        let expected_action_mroot = get_sample_eos_block_n(1)
             .unwrap()
             .action_mroot;
-        let action_receipts = get_sample_action_receipts()
+        let action_receipts = get_sample_action_receipts_n(1)
             .unwrap();
         let result = generate_merkle_proof_from_action_receipts(
             &MERKLE_PROOF_INDEX,
             &action_receipts,
         ).unwrap();
-        let expected_result = get_sample_merkle_proof()
+        let expected_result = get_sample_merkle_proof_n(1)
             .unwrap();
         assert!(result == expected_result);
         let last = expected_result

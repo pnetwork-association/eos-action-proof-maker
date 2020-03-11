@@ -92,12 +92,12 @@ pub fn parse_eos_action_receipt_jsons_and_put_in_state(state: State) -> Result<S
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_utils::test_utils::get_sample_submission_json;
+    use crate::test_utils::get_sample_submission_json_n;
 
     #[test]
     fn should_parse_action_receipt_jsons() {
         let expected_num_receipts = 4;
-        let json = get_sample_submission_json()
+        let json = get_sample_submission_json_n(1)
             .unwrap();
         let result = parse_action_receipt_jsons(&json.action_receipts)
             .unwrap();

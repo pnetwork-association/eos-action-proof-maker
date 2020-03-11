@@ -34,11 +34,11 @@ pub fn parse_eos_block_and_put_in_state(state: State) -> Result<State> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_utils::test_utils::get_sample_submission_json;
+    use crate::test_utils::get_sample_submission_json_n;
 
     #[test]
     fn should_parse_eos_block_json() {
-        let json = get_sample_submission_json()
+        let json = get_sample_submission_json_n(1)
             .unwrap();
         if let Err(e) = parse_eos_block_json(&json.block) {
             panic!("Error parsing EOS block: {}", e)
