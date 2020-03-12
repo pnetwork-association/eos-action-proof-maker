@@ -10,6 +10,7 @@ use eos_primitives::{
 pub type Byte = u8;
 pub type Bytes = Vec<Byte>;
 pub type MerkleProof = Vec<String>;
+pub type ActionProof = MerkleProof;
 pub type EosActions = Vec<EosAction>;
 pub type EosActionJsons = Vec<EosActionJson>;
 pub type Result<T> = result::Result<T, AppError>;
@@ -23,8 +24,9 @@ pub type EosActionReceiptJsons = Vec<EosActionReceiptJson>;
 pub struct Output {
     pub tx_id: String,
     pub block_id: String,
+    pub action: EosAction,
     pub action_index: usize,
-    pub merkle_proof: MerkleProof,
+    pub action_proof: MerkleProof,
     pub action_digest: String,
     pub serialized_action: String,
     pub action_receipt_digest: String,
@@ -35,8 +37,9 @@ impl Output {
     pub fn new(
         tx_id: String,
         block_id: String,
+        action: EosAction,
         action_index: usize,
-        merkle_proof: MerkleProof,
+        action_proof: ActionProof,
         action_digest: String,
         serialized_action: String,
         action_receipt_digest: String,
@@ -44,9 +47,10 @@ impl Output {
     ) -> Self {
         Output {
             tx_id,
+            action,
             block_id,
             action_index,
-            merkle_proof,
+            action_proof,
             action_digest,
             serialized_action,
             action_receipt_digest,

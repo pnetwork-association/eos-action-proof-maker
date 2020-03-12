@@ -15,6 +15,7 @@ pub fn generate_output_string(state: State) -> Result<String> {
                     state.cli_args.arg_INDEX
                 ].tx_id.clone(),
                 hex::encode(&state.get_eos_block()?.block_id),
+                state.get_eos_actions()?[state.cli_args.arg_INDEX].clone(),
                 state.cli_args.arg_INDEX,
                 state.get_merkle_proof()?.to_vec(),
                 hex::encode(
