@@ -11,6 +11,9 @@ pub fn generate_output_string(state: State) -> Result<String> {
     Ok(
         serde_json::to_string(
             &Output::new(
+                state.get_eos_actions_with_id()?[
+                    state.cli_args.arg_INDEX
+                ].tx_id.clone(),
                 hex::encode(&state.get_eos_block()?.block_id),
                 state.cli_args.arg_INDEX,
                 state.get_merkle_proof()?.to_vec(),
