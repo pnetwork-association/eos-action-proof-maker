@@ -24,39 +24,13 @@ pub type EosActionReceiptJsons = Vec<EosActionReceiptJson>;
 pub struct Output {
     pub tx_id: String,
     pub block_id: String,
-    pub action: EosAction,
     pub action_index: usize,
-    pub action_proof: MerkleProof,
     pub action_digest: String,
+    pub action_proof: MerkleProof,
     pub serialized_action: String,
+    pub action_json: EosActionJson,
     pub action_receipt_digest: String,
     pub serialized_action_receipt: String,
-}
-
-impl Output {
-    pub fn new(
-        tx_id: String,
-        block_id: String,
-        action: EosAction,
-        action_index: usize,
-        action_proof: ActionProof,
-        action_digest: String,
-        serialized_action: String,
-        action_receipt_digest: String,
-        serialized_action_receipt: String,
-    ) -> Self {
-        Output {
-            tx_id,
-            action,
-            block_id,
-            action_index,
-            action_proof,
-            action_digest,
-            serialized_action,
-            action_receipt_digest,
-            serialized_action_receipt,
-        }
-    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
