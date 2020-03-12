@@ -15,6 +15,7 @@ use crate::{
         AuthSequenceJsons,
         EosActionReceiptJson,
         EosActionReceiptJsons,
+        EosActionReceiptAndIdJson,
     },
 };
 
@@ -81,11 +82,27 @@ pub fn parse_action_receipt_jsons(
         .collect::<Result<EosActionReceipts>>()
 }
 
-pub fn parse_eos_action_receipt_jsons_and_put_in_state(state: State) -> Result<State> {
+fn get_actions_jsons_from_actions_with_ids(
+    actions_with_ids: &Vec<EosActionReceiptAndIdJson>,
+) -> Result<EosActionReceiptJsons> {
+    Ok(
+        actions_with_ids
+            .iter()
+            .map(|action_with_id| action_with_id.action_receipt_json.clone())
+            .collect::<EosActionReceiptJsons>()
+    )
+}
+
+pub fn parse_eos_action_receipt_jsons_and_put_in_state(
+    state: State
+) -> Result<State> {
     trace!("✔ Parsing EOS actions...");
     state
-        .get_eos_input_json()
-        .and_then(|json| parse_action_receipt_jsons(&json.action_receipts))
+        .get_eos_actions_with_id()
+        .and_then(|actions_with_ids|
+            get_actions_jsons_from_actions_with_ids(actions_with_ids)
+        )
+        .and_then(|receipt_jsons| parse_action_receipt_jsons(&receipt_jsons))
         .and_then(|receipts| state.add_eos_action_receipts(receipts))
 }
 

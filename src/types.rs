@@ -16,10 +16,12 @@ pub type Result<T> = result::Result<T, AppError>;
 pub type EosActionReceipts = Vec<EosActionReceipt>;
 pub type AuthSequenceJsons = Vec<AuthSequenceJson>;
 pub type AuthorizationJsons = Vec<AuthorizationJson>;
+pub type EosTransactionJsons = Vec<EosTransactionJson>;
 pub type EosActionReceiptJsons = Vec<EosActionReceiptJson>;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Output {
+    pub tx_id: String,
     pub block_id: String,
     pub action_index: usize,
     pub merkle_proof: MerkleProof,
@@ -31,6 +33,7 @@ pub struct Output {
 
 impl Output {
     pub fn new(
+        tx_id: String,
         block_id: String,
         action_index: usize,
         merkle_proof: MerkleProof,
@@ -40,6 +43,7 @@ impl Output {
         serialized_action_receipt: String,
     ) -> Self {
         Output {
+            tx_id,
             block_id,
             action_index,
             merkle_proof,
@@ -55,7 +59,21 @@ impl Output {
 pub struct EosInputJson {
     pub block: EosBlockJson,
     pub actions: EosActionJsons,
+    pub transactions: EosTransactionJsons,
     pub action_receipts: EosActionReceiptJsons,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct EosTransactionJson {
+    pub id: String,
+    pub action_traces: ActionTraceJsons,
+}
+
+pub type ActionTraceJsons = Vec<ActionTraceJson>;
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ActionTraceJson {
+    pub receipt: EosActionReceiptJson,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -116,4 +134,22 @@ pub struct EosActionReceiptJson {
     pub auth_sequence: AuthSequenceJsons,
     pub code_sequence: usize,
     pub abi_sequence: usize,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct EosActionReceiptAndIdJson {
+    pub tx_id: String,
+    pub action_receipt_json: EosActionReceiptJson,
+}
+
+impl EosActionReceiptAndIdJson {
+    pub fn new(
+        tx_id: String,
+        action_receipt_json: EosActionReceiptJson,
+    ) -> Self {
+        EosActionReceiptAndIdJson {
+            tx_id,
+            action_receipt_json,
+        }
+    }
 }
