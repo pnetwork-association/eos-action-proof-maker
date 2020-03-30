@@ -39,6 +39,12 @@ pub fn generate_output_string(state: State) -> Result<String> {
                         .actions
                         [state.cli_args.arg_INDEX]
                         .clone(),
+                action_receipt_json:
+                    state
+                        .get_eos_input_json()?
+                        .action_receipts
+                        [state.cli_args.arg_INDEX]
+                        .clone(),
                 action_receipt_digest:
                     hex::encode(
                         state

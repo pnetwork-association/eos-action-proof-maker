@@ -31,6 +31,7 @@ pub struct Output {
     pub action_json: EosActionJson,
     pub action_receipt_digest: String,
     pub serialized_action_receipt: String,
+    pub action_receipt_json: EosActionReceiptJson,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
