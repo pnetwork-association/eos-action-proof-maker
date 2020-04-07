@@ -49,12 +49,13 @@ pub fn validate_action_receipt_merkle_root(state: State) -> Result<State> {
     info!("✔ Validating action-receipts merkle root...");
     state
         .get_eos_action_receipts()
-        .map(get_merkle_digest_from_action_receipts)
+        .map(|receipts| sort_action_receipts_by_global_sequence(receipts))
+        .map(|receipts| get_merkle_digest_from_action_receipts(&receipts))
         .and_then(|digest|
-             check_merkle_digest(
-                 &digest,
-                 &state.get_eos_block()?.action_mroot
-             )
+            check_merkle_digest(
+                &digest,
+                &state.get_eos_block()?.action_mroot
+            )
         )
         .and_then(|_| Ok(state))
 }
