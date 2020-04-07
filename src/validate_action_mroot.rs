@@ -9,15 +9,7 @@ use crate::{
     },
 };
 
-pub fn sort_action_receipts_by_global_sequence(
-    action_receipts: &EosActionReceipts
-) -> EosActionReceipts {
-    let mut sorted = action_receipts.clone();
-    sorted.sort_by(|a, b| a.global_sequence.cmp(&b.global_sequence));
-    sorted
-}
-
-fn get_merkle_digest_from_action_receipts(
+pub fn get_merkle_digest_from_action_receipts(
     action_receipts: &EosActionReceipts
 ) -> Bytes {
     get_merkle_digest(
@@ -49,7 +41,6 @@ pub fn validate_action_receipt_merkle_root(state: State) -> Result<State> {
     info!("✔ Validating action-receipts merkle root...");
     state
         .get_eos_action_receipts()
-        .map(|receipts| sort_action_receipts_by_global_sequence(receipts))
         .map(|receipts| get_merkle_digest_from_action_receipts(&receipts))
         .and_then(|digest|
             check_merkle_digest(
@@ -132,25 +123,5 @@ mod tests {
         ) {
             panic!("Should NOT validate invalid merkle digest!");
         }
-    }
-
-    #[test]
-    fn should_sort_action_receipts_by_global_sequence() {
-        let expected_result =
-            "7cc717a7e256683ab4d01c05040fc503f2436625f5ac9f639a2fd0b201231564";
-        let action_receipts = get_sample_submission_json_n(6)
-            .and_then(|json| parse_action_receipt_jsons(&json.action_receipts))
-            .unwrap();
-        let digest_before_sorting = get_merkle_digest_from_action_receipts(
-            &action_receipts
-        );
-        assert_ne!(hex::encode(digest_before_sorting), expected_result);
-        let sorted_action_receipts = sort_action_receipts_by_global_sequence(
-            &action_receipts
-        );
-        let digest_after_sorting = get_merkle_digest_from_action_receipts(
-            &sorted_action_receipts
-        );
-        assert_eq!(hex::encode(digest_after_sorting), expected_result);
     }
 }

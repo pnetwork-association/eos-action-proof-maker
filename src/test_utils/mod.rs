@@ -8,7 +8,7 @@ use crate::{
     parse_input_json::parse_eos_input_json_string,
     parse_eos_action_receipts::parse_action_receipt_jsons,
     generate_proof::generate_merkle_proof_from_action_receipts,
-    validate_action_mroot::sort_action_receipts_by_global_sequence,
+    parse_eos_action_receipts::sort_action_receipts_by_global_sequence,
     types::{
         Result,
         EosBlock,
