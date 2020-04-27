@@ -56,7 +56,7 @@ fn deserialize_action_data(
     }
 }
 
-fn parse_eos_action_json(action_json: &EosActionJson) -> Result<EosAction> {
+pub fn parse_eos_action_json(action_json: &EosActionJson) -> Result<EosAction> {
     Ok(
         EosAction {
             account: AccountName::from_str(
