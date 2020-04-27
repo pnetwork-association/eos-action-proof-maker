@@ -24,22 +24,18 @@ pub fn parse_input_json_string_and_put_in_state(state: State) -> Result<State> {
 
 #[cfg(test)]
 mod tests {
-    /*
     use super::*;
     use crate::{
         test_utils::get_sample_submission_string_n,
     };
 
-    // FIXME Re-implement
     #[test]
     fn should_parse_input_json_string() {
-        let expected_number_of_actions = 4;
+        let expected_num_action_receipts = 6;
         let string = get_sample_submission_string_n(1)
             .unwrap();
         let result = parse_eos_input_json_string(&string)
             .unwrap();
-        assert!(result.action.len() == expected_number_of_actions);
-        assert!(result.action_receipts.len() == expected_number_of_actions);
+        assert_eq!(result.action_receipts.len(), expected_num_action_receipts);
     }
-    */
 }
