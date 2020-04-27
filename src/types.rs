@@ -16,7 +16,6 @@ pub type Result<T> = result::Result<T, AppError>;
 pub type EosActionReceipts = Vec<EosActionReceipt>;
 pub type AuthSequenceJsons = Vec<AuthSequenceJson>;
 pub type AuthorizationJsons = Vec<AuthorizationJson>;
-pub type EosTransactionJsons = Vec<EosTransactionJson>;
 pub type EosActionReceiptJsons = Vec<EosActionReceiptJson>;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -38,12 +37,6 @@ pub struct EosInputJson {
     pub block: EosBlockJson,
     pub action: EosActionJson,
     pub action_receipts: EosActionReceiptJsons,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct EosTransactionJson {
-    pub id: String,
-    pub action_traces: ActionTraceJsons,
 }
 
 pub type ActionTraceJsons = Vec<ActionTraceJson>;
