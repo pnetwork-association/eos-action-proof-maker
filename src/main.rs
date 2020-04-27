@@ -12,7 +12,7 @@ pub mod generate_output;
 pub mod parse_eos_block;
 pub mod parse_input_json;
 pub mod eos_merkle_utils;
-pub mod parse_eos_actions;
+pub mod parse_eos_action;
 pub mod initialize_logger;
 pub mod validate_action_mroot;
 pub mod parse_eos_action_receipts;
@@ -29,8 +29,8 @@ use crate::{
     parse_cli_args::parse_cli_args_and_put_in_state,
     generate_proof::generate_proof_and_add_to_state,
     parse_eos_block::parse_eos_block_and_put_in_state,
+    parse_eos_action::parse_eos_action_json_and_put_in_state,
     parse_input_json::parse_input_json_string_and_put_in_state,
-    parse_eos_actions::parse_eos_action_jsons_and_put_in_state,
     validate_action_mroot::validate_action_receipt_merkle_root,
     parse_eos_action_receipts::parse_eos_action_receipt_jsons_and_put_in_state,
 };
@@ -40,7 +40,7 @@ fn main() -> Result<()> {
         .and_then(initialize_logger)
         .and_then(parse_input_json_string_and_put_in_state)
         .and_then(parse_eos_block_and_put_in_state)
-        .and_then(parse_eos_action_jsons_and_put_in_state)
+        .and_then(parse_eos_action_json_and_put_in_state)
         .and_then(parse_eos_action_receipt_jsons_and_put_in_state)
         .and_then(validate_index_is_in_range)
         .and_then(validate_action_receipt_merkle_root)

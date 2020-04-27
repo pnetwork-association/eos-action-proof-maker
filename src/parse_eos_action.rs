@@ -76,8 +76,8 @@ fn parse_eos_action_json(action_json: &EosActionJson) -> Result<EosAction> {
     )
 }
 
-pub fn parse_eos_action_jsons_and_put_in_state(state: State) -> Result<State> {
-    trace!("✔ Parsing EOS actions...");
+pub fn parse_eos_action_json_and_put_in_state(state: State) -> Result<State> {
+    trace!("✔ Parsing EOS action...");
     state
         .get_eos_input_json()
         .and_then(|json| parse_eos_action_json(&json.action))
