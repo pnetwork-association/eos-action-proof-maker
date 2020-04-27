@@ -1,6 +1,7 @@
 pub mod state;
 pub mod types;
 pub mod error;
+pub mod utils;
 pub mod constants;
 pub mod test_utils;
 pub mod usage_info;
