@@ -38,7 +38,6 @@ pub struct Output {
 pub struct EosInputJson {
     pub block: EosBlockJson,
     pub actions: EosActionJsons,
-    pub transactions: EosTransactionJsons,
     pub action_receipts: EosActionReceiptJsons,
 }
 
@@ -106,6 +105,7 @@ pub struct AuthSequenceJson(pub String, pub u64);
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosActionReceiptJson {
+    //pub tx_id: String, // TODO FIXME Add this in!
     pub receiver: String,
     pub act_digest: String,
     pub global_sequence: u64,

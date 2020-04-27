@@ -8,7 +8,6 @@ use crate::{
         MerkleProof,
         EosInputJson,
         EosActionReceipts,
-        EosActionReceiptAndIdJson,
     },
 };
 
@@ -20,7 +19,6 @@ pub struct State {
     pub merkle_proof: Option<MerkleProof>,
     pub eos_input_json: Option<EosInputJson>,
     pub eos_action_receipts: Option<EosActionReceipts>,
-    pub eos_actions_with_ids: Option<Vec<EosActionReceiptAndIdJson>>,
 }
 
 fn get_not_in_state_err(substring: &str) -> String {
@@ -43,7 +41,6 @@ impl State {
                 merkle_proof: None,
                 eos_input_json: None,
                 eos_action_receipts: None,
-                eos_actions_with_ids: None,
             }
         )
     }
@@ -83,33 +80,6 @@ impl State {
                 self.eos_actions = Some(eos_actions);
                 Ok(self)
             }
-        }
-    }
-
-    pub fn add_eos_actions_with_id(
-        mut self,
-        eos_actions_with_ids: Vec<EosActionReceiptAndIdJson>,
-    ) -> Result<Self> {
-        trace!("✔ Adding EOS actions with ID to state!");
-        match self.eos_actions_with_ids {
-            Some(_) => Err(AppError::Custom(
-                get_no_overwrite_state_err("eos_actions_with_ids")
-            )),
-            None => {
-                self.eos_actions_with_ids = Some(eos_actions_with_ids);
-                Ok(self)
-            }
-        }
-    }
-
-    pub fn get_eos_actions_with_id(
-        &self
-    ) -> Result<&Vec<EosActionReceiptAndIdJson>> {
-        match &self.eos_actions_with_ids {
-            Some(actions) => Ok(actions),
-            None => Err(AppError::Custom(
-                get_not_in_state_err("eos_actions_with_ids")
-            ))
         }
     }
 

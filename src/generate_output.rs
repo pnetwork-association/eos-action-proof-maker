@@ -11,10 +11,7 @@ pub fn generate_output_string(state: State) -> Result<String> {
     Ok(
         serde_json::to_string(
             &Output {
-                tx_id:
-                    state.get_eos_actions_with_id()?[
-                        state.cli_args.arg_INDEX
-                    ].tx_id.clone(),
+                tx_id: "".to_string(), // FIXME
                 block_id:
                     hex::encode(&state.get_eos_block()?.block_id),
                 action_index:

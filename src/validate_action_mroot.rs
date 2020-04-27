@@ -55,12 +55,10 @@ pub fn validate_action_receipt_merkle_root(state: State) -> Result<State> {
 mod tests {
     use super::*;
     use crate::{
-        parse_eos_action_receipts::parse_action_receipt_jsons,
         test_utils::{
             NUM_SAMPLES,
             get_sample_eos_block_n,
             get_sample_action_receipts_n,
-            get_sample_submission_json_n,
         },
     };
 

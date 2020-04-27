@@ -16,7 +16,6 @@ pub mod parse_eos_actions;
 pub mod initialize_logger;
 pub mod validate_action_mroot;
 pub mod parse_eos_action_receipts;
-pub mod get_eos_actions_from_transactions;
 
 #[macro_use] extern crate log;
 #[macro_use] extern crate serde_derive;
@@ -34,9 +33,6 @@ use crate::{
     parse_eos_actions::parse_eos_action_jsons_and_put_in_state,
     validate_action_mroot::validate_action_receipt_merkle_root,
     parse_eos_action_receipts::parse_eos_action_receipt_jsons_and_put_in_state,
-    get_eos_actions_from_transactions::{
-        get_eos_actions_from_transactions_and_put_in_state,
-    },
 };
 
 fn main() -> Result<()> {
@@ -45,7 +41,6 @@ fn main() -> Result<()> {
         .and_then(parse_input_json_string_and_put_in_state)
         .and_then(parse_eos_block_and_put_in_state)
         .and_then(parse_eos_action_jsons_and_put_in_state)
-        .and_then(get_eos_actions_from_transactions_and_put_in_state)
         .and_then(parse_eos_action_receipt_jsons_and_put_in_state)
         .and_then(validate_index_is_in_range)
         .and_then(validate_action_receipt_merkle_root)
