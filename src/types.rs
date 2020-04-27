@@ -64,11 +64,7 @@ pub struct EosBlockJson {
     pub transaction_mroot: String,
     pub schedule_version: usize,
     pub new_producers: serde_json::Value,
-    pub header_extensions: Option<String>,//Vec<serde_json::Value>,
-    //pub block_num: u64,
-    //pub producer_signature: String,
-    //pub transactions: Vec<serde_json::Value>, // TODO Real type for this!
-    //pub block_extensions: Vec<serde_json::Value>,
+    pub header_extensions: Option<String>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -76,12 +72,12 @@ pub struct EosBlock {
     pub block_id: Bytes,
     pub previous: String,
     pub producer: String,
-    pub new_producers: serde_json::Value, // TODO: Handle! Could be null!
     pub confirmed: usize,
-    pub schedule_version: usize,
-    pub header_extensions: Option<String>,// Vec<serde_json::Value>, // TODO: Handle! Could be null!
-    pub transaction_mroot: String,
     pub action_mroot: String,
+    pub schedule_version: usize,
+    pub transaction_mroot: String,
+    pub header_extensions: Option<String>,
+    pub new_producers: serde_json::Value,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -104,7 +100,7 @@ pub struct AuthSequenceJson(pub String, pub u64);
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosActionReceiptJson {
-    //pub tx_id: String, // TODO FIXME Add this in!
+    pub tx_id: String,
     pub receiver: String,
     pub act_digest: String,
     pub global_sequence: u64,
