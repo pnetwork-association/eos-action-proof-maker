@@ -109,21 +109,3 @@ pub struct EosActionReceiptJson {
     pub code_sequence: usize,
     pub abi_sequence: usize,
 }
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct EosActionReceiptAndIdJson {
-    pub tx_id: String,
-    pub action_receipt_json: EosActionReceiptJson,
-}
-
-impl EosActionReceiptAndIdJson {
-    pub fn new(
-        tx_id: String,
-        action_receipt_json: EosActionReceiptJson,
-    ) -> Self {
-        EosActionReceiptAndIdJson {
-            tx_id,
-            action_receipt_json,
-        }
-    }
-}

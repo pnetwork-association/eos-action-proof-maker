@@ -28,7 +28,7 @@ use crate::{
     validate_index::validate_index_is_in_range,
     parse_cli_args::parse_cli_args_and_put_in_state,
     generate_proof::generate_proof_and_add_to_state,
-    parse_eos_block::parse_eos_block_and_put_in_state,
+    parse_eos_block::parse_eos_block_json_and_put_in_state,
     parse_eos_action::parse_eos_action_json_and_put_in_state,
     parse_input_json::parse_input_json_string_and_put_in_state,
     validate_action_mroot::validate_action_receipt_merkle_root,
@@ -39,7 +39,7 @@ fn main() -> Result<()> {
     match parse_cli_args_and_put_in_state()
         .and_then(initialize_logger)
         .and_then(parse_input_json_string_and_put_in_state)
-        .and_then(parse_eos_block_and_put_in_state)
+        .and_then(parse_eos_block_json_and_put_in_state)
         .and_then(parse_eos_action_json_and_put_in_state)
         .and_then(parse_eos_action_receipt_jsons_and_put_in_state)
         .and_then(validate_index_is_in_range)

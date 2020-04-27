@@ -1,4 +1,3 @@
-#![allow(dead_code)] // FIXME rm!
 use std::str::FromStr;
 use eos_primitives::{
     AccountName,
@@ -16,7 +15,6 @@ use crate::{
         AuthSequenceJsons,
         EosActionReceiptJson,
         EosActionReceiptJsons,
-        EosActionReceiptAndIdJson,
     },
 };
 
@@ -91,33 +89,13 @@ pub fn parse_action_receipt_jsons(
         .collect::<Result<EosActionReceipts>>()
 }
 
-fn get_actions_jsons_from_actions_with_ids(
-    actions_with_ids: &Vec<EosActionReceiptAndIdJson>,
-) -> Result<EosActionReceiptJsons> {
-    Ok(
-        actions_with_ids
-            .iter()
-            .map(|action_with_id| action_with_id.action_receipt_json.clone())
-            .collect::<EosActionReceiptJsons>()
-    )
-}
-
 pub fn parse_eos_action_receipt_jsons_and_put_in_state(
     state: State
 ) -> Result<State> {
-    trace!("✔ Parsing EOS actions...");
-    Ok(state) // FIXME;
-    /*
-    state
-        .get_eos_actions_with_id()
-        .and_then(|actions_with_ids|
-        // FIXME this will eventually just be in state from input
-            get_actions_jsons_from_actions_with_ids(actions_with_ids)
-        )
-        .and_then(|receipt_jsons| parse_action_receipt_jsons(&receipt_jsons))
+    trace!("✔ Parsing EOS action receipts...");
+    parse_action_receipt_jsons(&state.get_eos_input_json()?.action_receipts)
         .map(|receipts| sort_action_receipts_by_global_sequence(&receipts))
         .and_then(|receipts| state.add_eos_action_receipts(receipts))
-        */
 }
 
 #[cfg(test)]
