@@ -19,22 +19,13 @@ pub fn generate_output_string(state: State) -> Result<String> {
                 action_proof:
                     state.get_merkle_proof()?.to_vec(),
                 action_digest:
-                    hex::encode(
-                        state
-                            .get_eos_actions()?[state.cli_args.arg_INDEX]
-                            .to_digest()
-                    ),
+                    hex::encode(state.get_eos_action()?.to_digest()),
                 serialized_action:
-                    hex::encode(
-                        state
-                            .get_eos_actions()?[state.cli_args.arg_INDEX]
-                            .serialize()
-                    ),
+                    hex::encode(state.get_eos_action()?.serialize()),
                 action_json:
                     state
                         .get_eos_input_json()?
-                        .actions
-                        [state.cli_args.arg_INDEX]
+                        .action
                         .clone(),
                 action_receipt_json:
                     state

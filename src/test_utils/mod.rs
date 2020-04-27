@@ -18,7 +18,7 @@ use crate::{
     },
 };
 
-pub const NUM_SAMPLES: usize = 5;
+pub const NUM_SAMPLES: usize = 1;
 pub const MERKLE_PROOF_INDEX: usize = 3;
 
 pub fn get_sample_submission_string_n(n: usize) -> Result<String> {

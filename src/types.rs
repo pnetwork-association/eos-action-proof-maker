@@ -12,7 +12,6 @@ pub type Bytes = Vec<Byte>;
 pub type MerkleProof = Vec<String>;
 pub type ActionProof = MerkleProof;
 pub type EosActions = Vec<EosAction>;
-pub type EosActionJsons = Vec<EosActionJson>;
 pub type Result<T> = result::Result<T, AppError>;
 pub type EosActionReceipts = Vec<EosActionReceipt>;
 pub type AuthSequenceJsons = Vec<AuthSequenceJson>;
@@ -37,7 +36,7 @@ pub struct Output {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosInputJson {
     pub block: EosBlockJson,
-    pub actions: EosActionJsons,
+    pub action: EosActionJson,
     pub action_receipts: EosActionReceiptJsons,
 }
 
