@@ -10,52 +10,49 @@ use eos_primitives::{
 pub type Byte = u8;
 pub type Bytes = Vec<Byte>;
 pub type MerkleProof = Vec<String>;
+pub type ActionProof = MerkleProof;
 pub type EosActions = Vec<EosAction>;
 pub type EosActionJsons = Vec<EosActionJson>;
 pub type Result<T> = result::Result<T, AppError>;
 pub type EosActionReceipts = Vec<EosActionReceipt>;
 pub type AuthSequenceJsons = Vec<AuthSequenceJson>;
 pub type AuthorizationJsons = Vec<AuthorizationJson>;
+pub type EosTransactionJsons = Vec<EosTransactionJson>;
 pub type EosActionReceiptJsons = Vec<EosActionReceiptJson>;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Output {
+    pub tx_id: String,
     pub block_id: String,
     pub action_index: usize,
-    pub merkle_proof: MerkleProof,
     pub action_digest: String,
+    pub action_proof: MerkleProof,
     pub serialized_action: String,
+    pub action_json: EosActionJson,
     pub action_receipt_digest: String,
     pub serialized_action_receipt: String,
-}
-
-impl Output {
-    pub fn new(
-        block_id: String,
-        action_index: usize,
-        merkle_proof: MerkleProof,
-        action_digest: String,
-        serialized_action: String,
-        action_receipt_digest: String,
-        serialized_action_receipt: String,
-    ) -> Self {
-        Output {
-            block_id,
-            action_index,
-            merkle_proof,
-            action_digest,
-            serialized_action,
-            action_receipt_digest,
-            serialized_action_receipt,
-        }
-    }
+    pub action_receipt_json: EosActionReceiptJson,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosInputJson {
     pub block: EosBlockJson,
     pub actions: EosActionJsons,
+    pub transactions: EosTransactionJsons,
     pub action_receipts: EosActionReceiptJsons,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct EosTransactionJson {
+    pub id: String,
+    pub action_traces: ActionTraceJsons,
+}
+
+pub type ActionTraceJsons = Vec<ActionTraceJson>;
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ActionTraceJson {
+    pub receipt: EosActionReceiptJson,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -116,4 +113,22 @@ pub struct EosActionReceiptJson {
     pub auth_sequence: AuthSequenceJsons,
     pub code_sequence: usize,
     pub abi_sequence: usize,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct EosActionReceiptAndIdJson {
+    pub tx_id: String,
+    pub action_receipt_json: EosActionReceiptJson,
+}
+
+impl EosActionReceiptAndIdJson {
+    pub fn new(
+        tx_id: String,
+        action_receipt_json: EosActionReceiptJson,
+    ) -> Self {
+        EosActionReceiptAndIdJson {
+            tx_id,
+            action_receipt_json,
+        }
+    }
 }

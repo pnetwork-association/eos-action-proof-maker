@@ -9,7 +9,7 @@ use crate::{
     },
 };
 
-fn get_merkle_digest_from_action_receipts(
+pub fn get_merkle_digest_from_action_receipts(
     action_receipts: &EosActionReceipts
 ) -> Bytes {
     get_merkle_digest(
@@ -41,12 +41,12 @@ pub fn validate_action_receipt_merkle_root(state: State) -> Result<State> {
     info!("✔ Validating action-receipts merkle root...");
     state
         .get_eos_action_receipts()
-        .map(get_merkle_digest_from_action_receipts)
+        .map(|receipts| get_merkle_digest_from_action_receipts(&receipts))
         .and_then(|digest|
-             check_merkle_digest(
-                 &digest,
-                 &state.get_eos_block()?.action_mroot
-             )
+            check_merkle_digest(
+                &digest,
+                &state.get_eos_block()?.action_mroot
+            )
         )
         .and_then(|_| Ok(state))
 }
@@ -54,10 +54,14 @@ pub fn validate_action_receipt_merkle_root(state: State) -> Result<State> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_utils::{
-        NUM_SAMPLES,
-        get_sample_eos_block_n,
-        get_sample_action_receipts_n,
+    use crate::{
+        parse_eos_action_receipts::parse_action_receipt_jsons,
+        test_utils::{
+            NUM_SAMPLES,
+            get_sample_eos_block_n,
+            get_sample_action_receipts_n,
+            get_sample_submission_json_n,
+        },
     };
 
     #[test]

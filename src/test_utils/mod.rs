@@ -8,6 +8,7 @@ use crate::{
     parse_input_json::parse_eos_input_json_string,
     parse_eos_action_receipts::parse_action_receipt_jsons,
     generate_proof::generate_merkle_proof_from_action_receipts,
+    parse_eos_action_receipts::sort_action_receipts_by_global_sequence,
     types::{
         Result,
         EosBlock,
@@ -42,11 +43,7 @@ pub fn get_sample_eos_block_n(n: usize) -> Result<EosBlock> {
 pub fn get_sample_action_receipts_n(n: usize) -> Result<EosActionReceipts> {
     get_sample_submission_json_n(n)
         .and_then(|json| parse_action_receipt_jsons(&json.action_receipts))
-        .map(|mut receipts| {
-             receipts
-                .sort_by(|a, b| a.global_sequence.cmp(&b.global_sequence));
-             receipts
-         })
+        .map(|receipts| sort_action_receipts_by_global_sequence(&receipts))
 }
 
 pub fn get_sample_merkle_proof_n(n: usize) -> Result<MerkleProof> {
