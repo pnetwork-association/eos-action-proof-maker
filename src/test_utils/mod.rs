@@ -19,7 +19,7 @@ use crate::{
 };
 
 pub const NUM_SAMPLES: usize = 1;
-pub const MERKLE_PROOF_INDEX: usize = 3;
+pub const MERKLE_PROOF_INDEX: u32 = 3;
 
 pub fn get_sample_submission_string_n(n: usize) -> Result<String> {
     let path = format!("src/test_utils/sample-block-{}.json", n);
@@ -50,7 +50,7 @@ pub fn get_sample_merkle_proof_n(n: usize) -> Result<MerkleProof> {
     get_sample_action_receipts_n(n)
         .and_then(|receipts|
             generate_merkle_proof_from_action_receipts(
-                &MERKLE_PROOF_INDEX,
+                MERKLE_PROOF_INDEX,
                 &receipts,
             )
         )

@@ -9,11 +9,11 @@ use crate::{
 };
 
 pub fn generate_merkle_proof_from_action_receipts(
-    index: &usize,
+    index: u32,
     action_receipts: &EosActionReceipts,
 ) -> Result<MerkleProof> {
     generate_merkle_proof(
-        index.clone(),
+        index as usize,
         action_receipts
             .iter()
             .map(|action_receipt| action_receipt.to_digest())
@@ -26,7 +26,7 @@ pub fn generate_proof_and_add_to_state(state: State) -> Result<State> {
         .get_eos_action_receipts()
         .and_then(|action_receipts|
             generate_merkle_proof_from_action_receipts(
-                &state.cli_args.arg_INDEX,
+                state.get_proof_index()?,
                 &action_receipts,
             )
         )
@@ -51,7 +51,7 @@ mod tests {
         let action_receipts = get_sample_action_receipts_n(1)
             .unwrap();
         let result = generate_merkle_proof_from_action_receipts(
-            &MERKLE_PROOF_INDEX,
+            MERKLE_PROOF_INDEX,
             &action_receipts,
         ).unwrap();
         let expected_result = get_sample_merkle_proof_n(1)

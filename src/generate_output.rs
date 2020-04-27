@@ -15,7 +15,7 @@ pub fn generate_output_string(state: State) -> Result<String> {
                 block_id:
                     hex::encode(&state.get_eos_block()?.block_id),
                 action_index:
-                    state.cli_args.arg_INDEX,
+                    state.get_proof_index()? as usize,
                 action_proof:
                     state.get_merkle_proof()?.to_vec(),
                 action_digest:
@@ -31,20 +31,20 @@ pub fn generate_output_string(state: State) -> Result<String> {
                     state
                         .get_eos_input_json()?
                         .action_receipts
-                        [state.cli_args.arg_INDEX]
+                        [state.get_proof_index()? as usize]
                         .clone(),
                 action_receipt_digest:
                     hex::encode(
                         state
                             .get_eos_action_receipts()?
-                            [state.cli_args.arg_INDEX]
+                            [state.get_proof_index()? as usize]
                             .to_digest()
                     ),
                 serialized_action_receipt:
                     hex::encode(
                         state
                             .get_eos_action_receipts()?
-                            [state.cli_args.arg_INDEX]
+                            [state.get_proof_index()? as usize]
                             .serialize()
                     ),
             }

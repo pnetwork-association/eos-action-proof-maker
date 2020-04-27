@@ -14,6 +14,7 @@ use crate::{
 #[derive(Debug)]
 pub struct State {
     pub cli_args: CliArgs,
+    pub proof_index: Option<u32>,
     pub eos_block: Option<EosBlock>,
     pub eos_action: Option<EosAction>,
     pub merkle_proof: Option<MerkleProof>,
@@ -38,6 +39,7 @@ impl State {
                 cli_args,
                 eos_block: None,
                 eos_action: None,
+                proof_index: None,
                 merkle_proof: None,
                 eos_input_json: None,
                 eos_action_receipts: None,
@@ -135,6 +137,31 @@ impl State {
             Some(proof) => Ok(proof),
             None => Err(AppError::Custom(
                 get_not_in_state_err("merkle_proof")
+            ))
+        }
+    }
+
+    pub fn add_proof_index(
+        mut self,
+        proof_index: u32
+    ) -> Result<Self> {
+        trace!("✔ Adding mekle proof to state!");
+        match self.proof_index {
+            Some(_) => Err(AppError::Custom(
+                get_no_overwrite_state_err("proof_index")
+            )),
+            None => {
+                self.proof_index = Some(proof_index);
+                Ok(self)
+            }
+        }
+    }
+
+    pub fn get_proof_index(&self) -> Result<u32> {
+        match &self.proof_index {
+            Some(index) => Ok(*index),
+            None => Err(AppError::Custom(
+                get_not_in_state_err("proof_index")
             ))
         }
     }
