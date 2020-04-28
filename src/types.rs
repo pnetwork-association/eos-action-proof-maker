@@ -12,12 +12,10 @@ pub type Bytes = Vec<Byte>;
 pub type MerkleProof = Vec<String>;
 pub type ActionProof = MerkleProof;
 pub type EosActions = Vec<EosAction>;
-pub type EosActionJsons = Vec<EosActionJson>;
 pub type Result<T> = result::Result<T, AppError>;
 pub type EosActionReceipts = Vec<EosActionReceipt>;
 pub type AuthSequenceJsons = Vec<AuthSequenceJson>;
 pub type AuthorizationJsons = Vec<AuthorizationJson>;
-pub type EosTransactionJsons = Vec<EosTransactionJson>;
 pub type EosActionReceiptJsons = Vec<EosActionReceiptJson>;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -37,15 +35,8 @@ pub struct Output {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosInputJson {
     pub block: EosBlockJson,
-    pub actions: EosActionJsons,
-    pub transactions: EosTransactionJsons,
+    pub action: EosActionJson,
     pub action_receipts: EosActionReceiptJsons,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct EosTransactionJson {
-    pub id: String,
-    pub action_traces: ActionTraceJsons,
 }
 
 pub type ActionTraceJsons = Vec<ActionTraceJson>;
@@ -66,11 +57,7 @@ pub struct EosBlockJson {
     pub transaction_mroot: String,
     pub schedule_version: usize,
     pub new_producers: serde_json::Value,
-    pub header_extensions: Option<String>,//Vec<serde_json::Value>,
-    //pub block_num: u64,
-    //pub producer_signature: String,
-    //pub transactions: Vec<serde_json::Value>, // TODO Real type for this!
-    //pub block_extensions: Vec<serde_json::Value>,
+    pub header_extensions: Option<String>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -78,12 +65,12 @@ pub struct EosBlock {
     pub block_id: Bytes,
     pub previous: String,
     pub producer: String,
-    pub new_producers: serde_json::Value, // TODO: Handle! Could be null!
     pub confirmed: usize,
-    pub schedule_version: usize,
-    pub header_extensions: Option<String>,// Vec<serde_json::Value>, // TODO: Handle! Could be null!
-    pub transaction_mroot: String,
     pub action_mroot: String,
+    pub schedule_version: usize,
+    pub transaction_mroot: String,
+    pub header_extensions: Option<String>,
+    pub new_producers: serde_json::Value,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -106,6 +93,7 @@ pub struct AuthSequenceJson(pub String, pub u64);
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EosActionReceiptJson {
+    pub tx_id: String,
     pub receiver: String,
     pub act_digest: String,
     pub global_sequence: u64,
@@ -113,22 +101,4 @@ pub struct EosActionReceiptJson {
     pub auth_sequence: AuthSequenceJsons,
     pub code_sequence: usize,
     pub abi_sequence: usize,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct EosActionReceiptAndIdJson {
-    pub tx_id: String,
-    pub action_receipt_json: EosActionReceiptJson,
-}
-
-impl EosActionReceiptAndIdJson {
-    pub fn new(
-        tx_id: String,
-        action_receipt_json: EosActionReceiptJson,
-    ) -> Self {
-        EosActionReceiptAndIdJson {
-            tx_id,
-            action_receipt_json,
-        }
-    }
 }

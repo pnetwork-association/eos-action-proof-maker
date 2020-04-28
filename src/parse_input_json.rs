@@ -31,12 +31,11 @@ mod tests {
 
     #[test]
     fn should_parse_input_json_string() {
-        let expected_number_of_actions = 4;
+        let expected_num_action_receipts = 6;
         let string = get_sample_submission_string_n(1)
             .unwrap();
         let result = parse_eos_input_json_string(&string)
             .unwrap();
-        assert!(result.actions.len() == expected_number_of_actions);
-        assert!(result.action_receipts.len() == expected_number_of_actions);
+        assert_eq!(result.action_receipts.len(), expected_num_action_receipts);
     }
 }

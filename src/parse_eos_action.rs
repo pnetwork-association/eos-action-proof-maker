@@ -5,9 +5,7 @@ use crate::{
     types::{
         Bytes,
         Result,
-        EosActions,
         EosActionJson,
-        EosActionJsons,
         AuthorizationJson,
         AuthorizationJsons,
     },
@@ -58,7 +56,7 @@ fn deserialize_action_data(
     }
 }
 
-fn parse_eos_action_json(action_json: &EosActionJson) -> Result<EosAction> {
+pub fn parse_eos_action_json(action_json: &EosActionJson) -> Result<EosAction> {
     Ok(
         EosAction {
             account: AccountName::from_str(
@@ -78,21 +76,12 @@ fn parse_eos_action_json(action_json: &EosActionJson) -> Result<EosAction> {
     )
 }
 
-fn parse_action_jsons(
-    eos_action_jsons: &EosActionJsons
-) -> Result<EosActions> {
-    eos_action_jsons
-        .into_iter()
-        .map(parse_eos_action_json)
-        .collect::<Result<EosActions>>()
-}
-
-pub fn parse_eos_action_jsons_and_put_in_state(state: State) -> Result<State> {
-    trace!("✔ Parsing EOS actions...");
+pub fn parse_eos_action_json_and_put_in_state(state: State) -> Result<State> {
+    trace!("✔ Parsing EOS action...");
     state
         .get_eos_input_json()
-        .and_then(|json| parse_action_jsons(&json.actions))
-        .and_then(|actions| state.add_eos_actions(actions))
+        .and_then(|json| parse_eos_action_json(&json.action))
+        .and_then(|action| state.add_eos_action(action))
 }
 
 #[cfg(test)]
@@ -101,11 +90,11 @@ mod tests {
     use crate::test_utils::get_sample_submission_json_n;
 
     #[test]
-    fn should_parse_eos_action_jsons() {
-        let action_jsons = get_sample_submission_json_n(1)
+    fn should_parse_eos_action_json() {
+        let action_json = get_sample_submission_json_n(1)
             .unwrap()
-            .actions;
-        if let Err(e) = parse_action_jsons(&action_jsons) {
+            .action;
+        if let Err(e) = parse_eos_action_json(&action_json) {
             panic!("Error parsing eos actions: {}", e);
         }
     }

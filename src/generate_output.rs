@@ -11,52 +11,44 @@ pub fn generate_output_string(state: State) -> Result<String> {
     Ok(
         serde_json::to_string(
             &Output {
-                tx_id:
-                    state.get_eos_actions_with_id()?[
-                        state.cli_args.arg_INDEX
-                    ].tx_id.clone(),
+                tx_id: state
+                    .get_eos_input_json()?
+                    .action_receipts[state.get_proof_index()? as usize]
+                    .tx_id
+                    .clone(),
                 block_id:
                     hex::encode(&state.get_eos_block()?.block_id),
                 action_index:
-                    state.cli_args.arg_INDEX,
+                    state.get_proof_index()? as usize,
                 action_proof:
                     state.get_merkle_proof()?.to_vec(),
                 action_digest:
-                    hex::encode(
-                        state
-                            .get_eos_actions()?[state.cli_args.arg_INDEX]
-                            .to_digest()
-                    ),
+                    hex::encode(state.get_eos_action()?.to_digest()),
                 serialized_action:
-                    hex::encode(
-                        state
-                            .get_eos_actions()?[state.cli_args.arg_INDEX]
-                            .serialize()
-                    ),
+                    hex::encode(state.get_eos_action()?.serialize()),
                 action_json:
                     state
                         .get_eos_input_json()?
-                        .actions
-                        [state.cli_args.arg_INDEX]
+                        .action
                         .clone(),
                 action_receipt_json:
                     state
                         .get_eos_input_json()?
                         .action_receipts
-                        [state.cli_args.arg_INDEX]
+                        [state.get_proof_index()? as usize]
                         .clone(),
                 action_receipt_digest:
                     hex::encode(
                         state
                             .get_eos_action_receipts()?
-                            [state.cli_args.arg_INDEX]
+                            [state.get_proof_index()? as usize]
                             .to_digest()
                     ),
                 serialized_action_receipt:
                     hex::encode(
                         state
                             .get_eos_action_receipts()?
-                            [state.cli_args.arg_INDEX]
+                            [state.get_proof_index()? as usize]
                             .serialize()
                     ),
             }

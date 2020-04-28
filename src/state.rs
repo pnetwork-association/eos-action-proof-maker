@@ -1,26 +1,25 @@
+use eos_primitives::Action as EosAction;
 use crate::{
     error::AppError,
     parse_cli_args::CliArgs,
     types::{
         Result,
         EosBlock,
-        EosActions,
         MerkleProof,
         EosInputJson,
         EosActionReceipts,
-        EosActionReceiptAndIdJson,
     },
 };
 
 #[derive(Debug)]
 pub struct State {
     pub cli_args: CliArgs,
+    pub proof_index: Option<u32>,
     pub eos_block: Option<EosBlock>,
-    pub eos_actions: Option<EosActions>,
+    pub eos_action: Option<EosAction>,
     pub merkle_proof: Option<MerkleProof>,
     pub eos_input_json: Option<EosInputJson>,
     pub eos_action_receipts: Option<EosActionReceipts>,
-    pub eos_actions_with_ids: Option<Vec<EosActionReceiptAndIdJson>>,
 }
 
 fn get_not_in_state_err(substring: &str) -> String {
@@ -39,11 +38,11 @@ impl State {
             State {
                 cli_args,
                 eos_block: None,
-                eos_actions: None,
+                eos_action: None,
+                proof_index: None,
                 merkle_proof: None,
                 eos_input_json: None,
                 eos_action_receipts: None,
-                eos_actions_with_ids: None,
             }
         )
     }
@@ -73,51 +72,24 @@ impl State {
         }
     }
 
-    pub fn add_eos_actions(mut self, eos_actions: EosActions) -> Result<Self> {
+    pub fn add_eos_action(mut self, eos_action: EosAction) -> Result<Self> {
         trace!("✔ Adding EOS actions to state!");
-        match self.eos_actions {
+        match self.eos_action {
             Some(_) => Err(AppError::Custom(
-                get_no_overwrite_state_err("eos_actions")
+                get_no_overwrite_state_err("eos_action")
             )),
             None => {
-                self.eos_actions = Some(eos_actions);
+                self.eos_action = Some(eos_action);
                 Ok(self)
             }
         }
     }
 
-    pub fn add_eos_actions_with_id(
-        mut self,
-        eos_actions_with_ids: Vec<EosActionReceiptAndIdJson>,
-    ) -> Result<Self> {
-        trace!("✔ Adding EOS actions with ID to state!");
-        match self.eos_actions_with_ids {
-            Some(_) => Err(AppError::Custom(
-                get_no_overwrite_state_err("eos_actions_with_ids")
-            )),
-            None => {
-                self.eos_actions_with_ids = Some(eos_actions_with_ids);
-                Ok(self)
-            }
-        }
-    }
-
-    pub fn get_eos_actions_with_id(
-        &self
-    ) -> Result<&Vec<EosActionReceiptAndIdJson>> {
-        match &self.eos_actions_with_ids {
+    pub fn get_eos_action(&self) -> Result<&EosAction> {
+        match &self.eos_action {
             Some(actions) => Ok(actions),
             None => Err(AppError::Custom(
-                get_not_in_state_err("eos_actions_with_ids")
-            ))
-        }
-    }
-
-    pub fn get_eos_actions(&self) -> Result<&EosActions> {
-        match &self.eos_actions {
-            Some(actions) => Ok(actions),
-            None => Err(AppError::Custom(
-                get_not_in_state_err("eos_actions")
+                get_not_in_state_err("eos_action")
             ))
         }
     }
@@ -165,6 +137,31 @@ impl State {
             Some(proof) => Ok(proof),
             None => Err(AppError::Custom(
                 get_not_in_state_err("merkle_proof")
+            ))
+        }
+    }
+
+    pub fn add_proof_index(
+        mut self,
+        proof_index: u32
+    ) -> Result<Self> {
+        trace!("✔ Adding mekle proof to state!");
+        match self.proof_index {
+            Some(_) => Err(AppError::Custom(
+                get_no_overwrite_state_err("proof_index")
+            )),
+            None => {
+                self.proof_index = Some(proof_index);
+                Ok(self)
+            }
+        }
+    }
+
+    pub fn get_proof_index(&self) -> Result<u32> {
+        match &self.proof_index {
+            Some(index) => Ok(*index),
+            None => Err(AppError::Custom(
+                get_not_in_state_err("proof_index")
             ))
         }
     }

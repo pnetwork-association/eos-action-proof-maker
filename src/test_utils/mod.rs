@@ -1,3 +1,4 @@
+use eos_primitives::Action as EosAction;
 use std::{
     path::Path,
     fs::read_to_string,
@@ -5,6 +6,7 @@ use std::{
 use crate::{
     error::AppError,
     parse_eos_block::parse_eos_block_json,
+    parse_eos_action::parse_eos_action_json,
     parse_input_json::parse_eos_input_json_string,
     parse_eos_action_receipts::parse_action_receipt_jsons,
     generate_proof::generate_merkle_proof_from_action_receipts,
@@ -18,8 +20,8 @@ use crate::{
     },
 };
 
-pub const NUM_SAMPLES: usize = 5;
-pub const MERKLE_PROOF_INDEX: usize = 3;
+pub const NUM_SAMPLES: usize = 1;
+pub const MERKLE_PROOF_INDEX: u32 = 3;
 
 pub fn get_sample_submission_string_n(n: usize) -> Result<String> {
     let path = format!("src/test_utils/sample-block-{}.json", n);
@@ -46,11 +48,16 @@ pub fn get_sample_action_receipts_n(n: usize) -> Result<EosActionReceipts> {
         .map(|receipts| sort_action_receipts_by_global_sequence(&receipts))
 }
 
+pub fn get_sample_action_n(n: usize) -> Result<EosAction> {
+    get_sample_submission_json_n(n)
+        .and_then(|json| parse_eos_action_json(&json.action))
+}
+
 pub fn get_sample_merkle_proof_n(n: usize) -> Result<MerkleProof> {
     get_sample_action_receipts_n(n)
         .and_then(|receipts|
             generate_merkle_proof_from_action_receipts(
-                &MERKLE_PROOF_INDEX,
+                MERKLE_PROOF_INDEX,
                 &receipts,
             )
         )

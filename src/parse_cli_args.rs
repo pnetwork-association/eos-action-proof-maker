@@ -14,7 +14,6 @@ use crate::{
 #[derive(Clone, Debug, PartialEq, Deserialize)]
 pub struct CliArgs {
     pub arg_JSON: String,
-    pub arg_INDEX: usize,
     pub flag_file: String,
     pub cmd_generate: bool,
 }
