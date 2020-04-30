@@ -57,7 +57,7 @@ pub struct EosBlockJson {
     pub transaction_mroot: String,
     pub schedule_version: usize,
     pub new_producers: serde_json::Value,
-    pub header_extensions: Option<String>,
+    pub header_extensions: serde_json::Value,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -69,8 +69,8 @@ pub struct EosBlock {
     pub action_mroot: String,
     pub schedule_version: usize,
     pub transaction_mroot: String,
-    pub header_extensions: Option<String>,
     pub new_producers: serde_json::Value,
+    pub header_extensions: serde_json::Value,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
