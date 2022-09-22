@@ -1,14 +1,6 @@
+use crate::{error::AppError, state::State, types::Result, usage_info::USAGE_INFO};
 use docopt::Docopt;
-use std::{
-    path::Path,
-    fs::read_to_string,
-};
-use crate::{
-    state::State,
-    types::Result,
-    error::AppError,
-    usage_info::USAGE_INFO,
-};
+use std::{fs::read_to_string, path::Path};
 
 #[allow(non_snake_case)]
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize)]
@@ -19,26 +11,20 @@ pub struct CliArgs {
 }
 
 impl CliArgs {
-    pub fn update_json_in_cli_args(
-        mut self,
-        block_json: String
-    ) -> Result<Self> {
+    pub fn update_json_in_cli_args(mut self, block_json: String) -> Result<Self> {
         self.arg_JSON = block_json;
         Ok(self)
     }
 }
 
 pub fn parse_cli_args() -> Result<CliArgs> {
-    match Docopt::new(USAGE_INFO)
-        .and_then(|d| d.deserialize()) {
-            Ok(cli_args) => Ok(cli_args),
-            Err(_) => Err(AppError::Custom(USAGE_INFO.to_string()))
-        }
+    match Docopt::new(USAGE_INFO).and_then(|d| d.deserialize()) {
+        Ok(cli_args) => Ok(cli_args),
+        Err(_) => Err(AppError::Custom(USAGE_INFO.to_string())),
+    }
 }
 
-pub fn maybe_read_block_json_from_file(
-    cli_args: CliArgs
-) -> Result<CliArgs> {
+pub fn maybe_read_block_json_from_file(cli_args: CliArgs) -> Result<CliArgs> {
     match Path::new(&cli_args.flag_file).exists() {
         true => {
             info!(

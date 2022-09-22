@@ -1,18 +1,10 @@
+use crate::{constants::LOG_FILE_PATH, error::AppError, state::State, types::Result};
 use chrono::Utc;
-use simplelog::*;
 use log::LevelFilter;
+use simplelog::*;
 use std::{
+    fs::{create_dir_all, File},
     path::Path,
-    fs::{
-        File,
-        create_dir_all,
-    },
-};
-use crate::{
-    state::State,
-    types::Result,
-    error::AppError,
-    constants::LOG_FILE_PATH,
 };
 
 fn get_log_file_path() -> String {
@@ -28,13 +20,13 @@ pub fn initialize_logger(state: State) -> Result<State> {
     match WriteLogger::init(
         LevelFilter::Trace,
         Config::default(),
-        File::create(log_path.clone())?
+        File::create(log_path.clone())?,
     ) {
         Ok(_) => {
             info!("✔ Logger initialized successfully");
             info!("✔ Log writing to: {}", log_path);
             Ok(state)
-        },
-        Err(e) => Err(AppError::Custom(e.to_string()))
+        }
+        Err(e) => Err(AppError::Custom(e.to_string())),
     }
 }

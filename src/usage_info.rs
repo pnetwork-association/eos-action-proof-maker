@@ -39,4 +39,3 @@ Options:
     <PATH>              ❍ Path to a file containing the valid <JSON> string
                           described above.
 ";
-
