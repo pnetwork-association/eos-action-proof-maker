@@ -3,9 +3,7 @@ use crate::{
     state::State,
     types::{AuthorizationJson, AuthorizationJsons, Bytes, EosActionJson, Result},
 };
-use eos_primitives::{
-    AccountName, Action as EosAction, ActionName, PermissionLevel, PermissionLevels,
-};
+use eos_chain::{AccountName, Action as EosAction, ActionName, PermissionLevel};
 use std::str::FromStr;
 
 fn parse_authorization_json(authorization_json: &AuthorizationJson) -> Result<PermissionLevel> {
@@ -15,11 +13,13 @@ fn parse_authorization_json(authorization_json: &AuthorizationJson) -> Result<Pe
     )?)
 }
 
-fn parse_authorization_jsons(authorization_jsons: &AuthorizationJsons) -> Result<PermissionLevels> {
+fn parse_authorization_jsons(
+    authorization_jsons: &AuthorizationJsons,
+) -> Result<Vec<PermissionLevel>> {
     authorization_jsons
         .iter()
         .map(parse_authorization_json)
-        .collect::<Result<PermissionLevels>>()
+        .collect::<Result<Vec<PermissionLevel>>>()
 }
 
 fn deserialize_action_data(

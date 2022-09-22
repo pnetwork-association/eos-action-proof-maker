@@ -1,5 +1,5 @@
 use crate::error::AppError;
-use eos_primitives::{Action as EosAction, ActionReceipt as EosActionReceipt};
+use eos_chain::{Action as EosAction, ActionReceipt as EosActionReceipt};
 use std::result;
 
 pub type Byte = u8;

@@ -3,7 +3,7 @@ use crate::{
     parse_cli_args::CliArgs,
     types::{EosActionReceipts, EosBlock, EosInputJson, MerkleProof, Result},
 };
-use eos_primitives::Action as EosAction;
+use eos_chain::Action as EosAction;
 
 #[derive(Debug)]
 pub struct State {
