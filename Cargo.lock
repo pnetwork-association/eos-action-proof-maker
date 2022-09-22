@@ -207,7 +207,7 @@ dependencies = [
 
 [[package]]
 name = "eos_action_proof_maker"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "bitcoin_hashes",
  "chrono",
