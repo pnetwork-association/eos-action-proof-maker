@@ -41,14 +41,14 @@ pub fn validate_action_receipt_merkle_root(state: State) -> Result<State> {
     info!("✔ Validating action-receipts merkle root...");
     state
         .get_eos_action_receipts()
-        .map(|receipts| get_merkle_digest_from_action_receipts(&receipts))
+        .map(get_merkle_digest_from_action_receipts)
         .and_then(|digest|
             check_merkle_digest(
                 &digest,
                 &state.get_eos_block()?.action_mroot
             )
         )
-        .and_then(|_| Ok(state))
+        .and(Ok(state))
 }
 
 #[cfg(test)]

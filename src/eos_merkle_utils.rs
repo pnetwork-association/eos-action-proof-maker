@@ -72,7 +72,7 @@ fn make_and_hash_canonical_pair(l: Bytes, r: Bytes) -> Bytes {
 }
 
 pub fn get_merkle_digest(mut leaves: Vec<Bytes>) -> Bytes {
-    if leaves.len() == 0 {
+    if leaves.is_empty() {
         return vec![0x00] // TODO Need a type for this!
     }
     while leaves.len() > 1 {
@@ -143,22 +143,22 @@ pub fn generate_merkle_proof(
                 leaves.resize(leaves.len() / 2, vec![0x00]);
             }
             proof.push(hex::encode(leaves[0].clone()));
-            return Ok(proof);
+            Ok(proof)
         }
     }
 }
 
 pub fn verify_merkle_proof(merkle_proof: &MerkleProof) -> Result<bool> {
     let mut leaves = Vec::new();
-    for i in 0..merkle_proof.len() {
-        leaves.push(hex::decode(merkle_proof[i].clone())?)
+    for proof in merkle_proof.iter() {
+        leaves.push(hex::decode(proof.clone())?)
     }
     let mut node = leaves[0].clone();
-    for i in 1..leaves.len() - 1 {
-        if is_canonical_right(&leaves[i]) {
-            node = make_and_hash_canonical_pair(node, leaves[i].clone());
+    for leaf in leaves.iter().take(leaves.len() - 1).skip(1) {
+        if is_canonical_right(leaf) {
+            node = make_and_hash_canonical_pair(node, leaf.clone());
         } else {
-            node = make_and_hash_canonical_pair(leaves[i].clone(), node);
+            node = make_and_hash_canonical_pair(leaf.clone(), node);
         }
     }
     Ok(Some(&node) == leaves.last())

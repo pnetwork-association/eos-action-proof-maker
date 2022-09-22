@@ -67,12 +67,8 @@ fn parse_eos_action_receipt_json(
             act_digest: convert_hex_to_checksum256(
                 &eos_action_receipt_json.act_digest
             )?,
-            global_sequence: eos_action_receipt_json
-                .global_sequence
-                .into(),
-            recv_sequence: eos_action_receipt_json
-                .recv_sequence
-                .into(),
+            global_sequence: eos_action_receipt_json.global_sequence,
+            recv_sequence: eos_action_receipt_json.recv_sequence,
             auth_sequence: parse_auth_sequence_jsons(
                 &eos_action_receipt_json.auth_sequence
             )?,
@@ -84,7 +80,7 @@ pub fn parse_action_receipt_jsons(
     eos_action_receipt_jsons: &EosActionReceiptJsons
 ) -> Result<EosActionReceipts> {
     eos_action_receipt_jsons
-        .into_iter()
+        .iter()
         .map(parse_eos_action_receipt_json)
         .collect::<Result<EosActionReceipts>>()
 }

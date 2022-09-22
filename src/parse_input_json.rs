@@ -8,9 +8,9 @@ use crate::{
 };
 
 pub fn parse_eos_input_json_string(
-    eos_input_json_string: &String
+    eos_input_json_string: &str
 ) -> Result<EosInputJson> {
-    match serde_json::from_str(&eos_input_json_string) {
+    match serde_json::from_str(eos_input_json_string) {
         Ok(result) => Ok(result),
         Err(e) => Err(AppError::Custom(e.to_string()))
     }

@@ -11,7 +11,7 @@ use crate::{
 };
 
 #[allow(non_snake_case)]
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Deserialize)]
 pub struct CliArgs {
     pub arg_JSON: String,
     pub flag_file: String,

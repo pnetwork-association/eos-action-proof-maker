@@ -23,7 +23,7 @@ pub fn initialize_logger(state: State) -> Result<State> {
     let log_path = get_log_file_path();
     if !Path::new(&LOG_FILE_PATH).exists() {
         info!("✔ No log dir found, creating...");
-        create_dir_all(&LOG_FILE_PATH)?;
+        create_dir_all(LOG_FILE_PATH)?;
     };
     match WriteLogger::init(
         LevelFilter::Trace,

@@ -1,4 +1,4 @@
-pub static USAGE_INFO: &'static str = "
+pub static USAGE_INFO: &str = "
 ❍ EOS Action-Proof Maker ❍
 
     Copyright Greg Kapka 2019

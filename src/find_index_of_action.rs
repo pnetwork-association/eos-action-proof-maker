@@ -15,7 +15,7 @@ use crate::{
 fn get_digest_from_action(
     action: &EosAction
 ) -> Result<Checksum256> {
-    Ok(convert_bytes_to_checksum256(&action.to_digest())?)
+    convert_bytes_to_checksum256(&action.to_digest())
 }
 
 fn get_index_of_action(

@@ -27,7 +27,7 @@ pub fn generate_proof_and_add_to_state(state: State) -> Result<State> {
         .and_then(|action_receipts|
             generate_merkle_proof_from_action_receipts(
                 state.get_proof_index()?,
-                &action_receipts,
+                action_receipts,
             )
         )
         .and_then(|proof| state.add_merkle_proof(proof))

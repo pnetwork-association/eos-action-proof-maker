@@ -9,7 +9,7 @@ use crate::{
 };
 
 fn verify_proof(merkle_proof: &MerkleProof) -> Result<()> {
-    match verify_merkle_proof(&merkle_proof) {
+    match verify_merkle_proof(merkle_proof) {
         Ok(true) => Ok(()),
         _ => Err(AppError::Custom(
             "✘ Error verifying generated merkle proof!".to_string()
@@ -21,7 +21,7 @@ pub fn verify_proof_in_state(state: State) -> Result<State> {
     state
         .get_merkle_proof()
         .and_then(verify_proof)
-        .and_then(|_| Ok(state))
+        .and(Ok(state))
 }
 
 #[cfg(test)]

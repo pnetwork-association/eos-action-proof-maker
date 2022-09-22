@@ -10,13 +10,13 @@ use crate::{
 pub fn parse_eos_block_json(block_json: &EosBlockJson) -> Result<EosBlock> {
     Ok(
         EosBlock {
+            confirmed: block_json.confirmed,
             previous: block_json.previous.clone(),
             producer: block_json.producer.clone(),
             new_producers: serde_json::Value::Null,
-            confirmed: block_json.confirmed.clone(),
             block_id: hex::decode(&block_json.block_id)?,
             action_mroot: block_json.action_mroot.clone(),
-            schedule_version: block_json.schedule_version.clone(),
+            schedule_version: block_json.schedule_version,
             header_extensions: block_json.header_extensions.clone(),
             transaction_mroot: block_json.transaction_mroot.clone(),
         }

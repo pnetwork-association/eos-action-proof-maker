@@ -28,7 +28,7 @@ pub fn get_sample_submission_string_n(n: usize) -> Result<String> {
     match Path::new(&path).exists() {
         true => Ok(read_to_string(path)?),
         false => Err(AppError::Custom(
-            format!("✘ Cannot find sample-submission-json file!")
+            "✘ Cannot find sample-submission-json file!".to_string()
         ))
     }
 }
