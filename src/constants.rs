@@ -1,1 +1,1 @@
-pub static LOG_FILE_PATH: &'static str = "logs/";
+pub static LOG_FILE_PATH: &str = "logs/";

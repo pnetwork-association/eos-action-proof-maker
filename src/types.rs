@@ -1,11 +1,6 @@
+use crate::error::AppError;
+use eos_primitives::{Action as EosAction, ActionReceipt as EosActionReceipt};
 use std::result;
-use crate::{
-    error::AppError
-};
-use eos_primitives::{
-    Action as EosAction,
-    ActionReceipt as EosActionReceipt,
-};
 
 pub type Byte = u8;
 pub type Bytes = Vec<Byte>;
@@ -97,7 +92,7 @@ pub struct EosActionReceiptJson {
     pub receiver: String,
     pub act_digest: String,
     pub global_sequence: u64,
-    pub recv_sequence:  u64,
+    pub recv_sequence: u64,
     pub auth_sequence: AuthSequenceJsons,
     pub code_sequence: usize,
     pub abi_sequence: usize,

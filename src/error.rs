@@ -14,18 +14,14 @@ pub enum AppError {
 impl fmt::Display for AppError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let msg = match *self {
-            AppError::Custom(ref msg) =>
-                format!("{}", msg),
-            AppError::HexError(ref e) =>
-                format!("✘ Hex Error!\n✘ {}", e),
-            AppError::IOError(ref e) =>
-                format!("✘ I/O Error!\n✘ {}", e),
-            AppError::SerdeJsonError(ref e) =>
-                format!("✘ Serde JSON error!\n✘ {}", e),
-            AppError::EosPrimitivesError(ref e) =>
-                format!("✘ Eos Primitives Error!\n✘ {:?}", e),
-            AppError::EosPrimitivesNamesError(ref e) =>
-                format!("✘ Eos Primitives Names Error!\n✘ {:?}", e),
+            AppError::Custom(ref msg) => msg.to_string(),
+            AppError::HexError(ref e) => format!("✘ Hex Error!\n✘ {}", e),
+            AppError::IOError(ref e) => format!("✘ I/O Error!\n✘ {}", e),
+            AppError::SerdeJsonError(ref e) => format!("✘ Serde JSON error!\n✘ {}", e),
+            AppError::EosPrimitivesError(ref e) => format!("✘ Eos Primitives Error!\n✘ {:?}", e),
+            AppError::EosPrimitivesNamesError(ref e) => {
+                format!("✘ Eos Primitives Names Error!\n✘ {:?}", e)
+            }
         };
         f.write_fmt(format_args!("{}", msg))
     }

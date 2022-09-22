@@ -1,24 +1,15 @@
-use eos_primitives::Action as EosAction;
-use std::{
-    path::Path,
-    fs::read_to_string,
-};
 use crate::{
     error::AppError,
-    parse_eos_block::parse_eos_block_json,
-    parse_eos_action::parse_eos_action_json,
-    parse_input_json::parse_eos_input_json_string,
-    parse_eos_action_receipts::parse_action_receipt_jsons,
     generate_proof::generate_merkle_proof_from_action_receipts,
+    parse_eos_action::parse_eos_action_json,
+    parse_eos_action_receipts::parse_action_receipt_jsons,
     parse_eos_action_receipts::sort_action_receipts_by_global_sequence,
-    types::{
-        Result,
-        EosBlock,
-        MerkleProof,
-        EosInputJson,
-        EosActionReceipts,
-    },
+    parse_eos_block::parse_eos_block_json,
+    parse_input_json::parse_eos_input_json_string,
+    types::{EosActionReceipts, EosBlock, EosInputJson, MerkleProof, Result},
 };
+use eos_primitives::Action as EosAction;
+use std::{fs::read_to_string, path::Path};
 
 pub const NUM_SAMPLES: usize = 1;
 pub const MERKLE_PROOF_INDEX: u32 = 3;
@@ -28,8 +19,8 @@ pub fn get_sample_submission_string_n(n: usize) -> Result<String> {
     match Path::new(&path).exists() {
         true => Ok(read_to_string(path)?),
         false => Err(AppError::Custom(
-            format!("✘ Cannot find sample-submission-json file!")
-        ))
+            "✘ Cannot find sample-submission-json file!".to_string(),
+        )),
     }
 }
 
@@ -38,8 +29,7 @@ pub fn get_sample_submission_json_n(n: usize) -> Result<EosInputJson> {
 }
 
 pub fn get_sample_eos_block_n(n: usize) -> Result<EosBlock> {
-    get_sample_submission_json_n(n)
-        .and_then(|json| parse_eos_block_json(&json.block))
+    get_sample_submission_json_n(n).and_then(|json| parse_eos_block_json(&json.block))
 }
 
 pub fn get_sample_action_receipts_n(n: usize) -> Result<EosActionReceipts> {
@@ -49,18 +39,13 @@ pub fn get_sample_action_receipts_n(n: usize) -> Result<EosActionReceipts> {
 }
 
 pub fn get_sample_action_n(n: usize) -> Result<EosAction> {
-    get_sample_submission_json_n(n)
-        .and_then(|json| parse_eos_action_json(&json.action))
+    get_sample_submission_json_n(n).and_then(|json| parse_eos_action_json(&json.action))
 }
 
 pub fn get_sample_merkle_proof_n(n: usize) -> Result<MerkleProof> {
-    get_sample_action_receipts_n(n)
-        .and_then(|receipts|
-            generate_merkle_proof_from_action_receipts(
-                MERKLE_PROOF_INDEX,
-                &receipts,
-            )
-        )
+    get_sample_action_receipts_n(n).and_then(|receipts| {
+        generate_merkle_proof_from_action_receipts(MERKLE_PROOF_INDEX, &receipts)
+    })
 }
 
 #[cfg(test)]

@@ -1,4 +1,4 @@
-pub static USAGE_INFO: &'static str = "
+pub static USAGE_INFO: &str = "
 ❍ EOS Action-Proof Maker ❍
 
     Copyright Greg Kapka 2019
@@ -39,4 +39,3 @@ Options:
     <PATH>              ❍ Path to a file containing the valid <JSON> string
                           described above.
 ";
-

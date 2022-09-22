@@ -1,18 +1,13 @@
 use crate::{
-    state::State,
     error::AppError,
-    types::{
-        Result,
-        EosInputJson
-    },
+    state::State,
+    types::{EosInputJson, Result},
 };
 
-pub fn parse_eos_input_json_string(
-    eos_input_json_string: &String
-) -> Result<EosInputJson> {
-    match serde_json::from_str(&eos_input_json_string) {
+pub fn parse_eos_input_json_string(eos_input_json_string: &str) -> Result<EosInputJson> {
+    match serde_json::from_str(eos_input_json_string) {
         Ok(result) => Ok(result),
-        Err(e) => Err(AppError::Custom(e.to_string()))
+        Err(e) => Err(AppError::Custom(e.to_string())),
     }
 }
 
@@ -25,17 +20,13 @@ pub fn parse_input_json_string_and_put_in_state(state: State) -> Result<State> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{
-        test_utils::get_sample_submission_string_n,
-    };
+    use crate::test_utils::get_sample_submission_string_n;
 
     #[test]
     fn should_parse_input_json_string() {
         let expected_num_action_receipts = 6;
-        let string = get_sample_submission_string_n(1)
-            .unwrap();
-        let result = parse_eos_input_json_string(&string)
-            .unwrap();
+        let string = get_sample_submission_string_n(1).unwrap();
+        let result = parse_eos_input_json_string(&string).unwrap();
         assert_eq!(result.action_receipts.len(), expected_num_action_receipts);
     }
 }
