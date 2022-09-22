@@ -6,7 +6,10 @@ use crate::{
 use eos_chain::{Action as EosAction, Checksum256, Digest};
 
 fn get_digest_from_action(action: &EosAction) -> Result<Checksum256> {
-    Ok(action.digest()?)
+    debug!("Getting digest from action: {}", action);
+    let digest = action.digest()?;
+    debug!("Action digest: {}", digest);
+    Ok(digest)
 }
 
 fn get_index_of_action(action: &EosAction, action_receipts: &EosActionReceipts) -> Result<u32> {
