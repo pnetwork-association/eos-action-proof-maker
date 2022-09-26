@@ -1,6 +1,6 @@
 [package]
 name = "eos_action_proof_maker"
-version = "1.0.0"
+version = "1.1.0"
 authors = ["Greg Kapka <greg@oraclize.it>"]
 edition = "2018"
 
@@ -8,10 +8,10 @@ edition = "2018"
 hex = "0.3.2"
 log = "0.4.8"
 docopt = "1.1.0"
-chrono = "0.4.9"
+chrono = "0.4.22"
 simplelog = "0.7.3"
 serde_json = "1.0.40"
 bitcoin_hashes = "0.7.0"
 serde_derive = "1.0.101"
 serde = { version = "1", features = ["derive"] }
-eos-primitives = { git = "https://github.com/provable-things/rust-eos", branch = "provable-additions" }
+eos-chain = { git = "https://github.com/bifrost-finance/rust-eos", rev = "8e57843" }

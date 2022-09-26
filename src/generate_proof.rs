@@ -1,8 +1,10 @@
 use crate::{
     eos_merkle_utils::generate_merkle_proof,
     state::State,
-    types::{EosActionReceipts, MerkleProof, Result},
+    types::{Bytes, EosActionReceipts, MerkleProof, Result},
 };
+
+use eos_chain::Digest;
 
 pub fn generate_merkle_proof_from_action_receipts(
     index: u32,
@@ -12,8 +14,8 @@ pub fn generate_merkle_proof_from_action_receipts(
         index as usize,
         action_receipts
             .iter()
-            .map(|action_receipt| action_receipt.to_digest())
-            .collect(),
+            .map(|action_receipt| Ok(action_receipt.digest()?.as_bytes().to_vec()))
+            .collect::<Result<Vec<Bytes>>>()?,
     )
 }
 

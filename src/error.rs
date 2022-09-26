@@ -7,8 +7,8 @@ pub enum AppError {
     IOError(std::io::Error),
     HexError(hex::FromHexError),
     SerdeJsonError(serde_json::error::Error),
-    EosPrimitivesError(eos_primitives::error::Error),
-    EosPrimitivesNamesError(eos_primitives::ParseNameError),
+    EosPrimitivesError(eos_chain::error::Error),
+    EosPrimitivesNamesError(eos_chain::ParseNameError),
 }
 
 impl fmt::Display for AppError {
@@ -39,14 +39,14 @@ impl From<std::io::Error> for AppError {
     }
 }
 
-impl From<eos_primitives::ParseNameError> for AppError {
-    fn from(e: eos_primitives::ParseNameError) -> AppError {
+impl From<eos_chain::ParseNameError> for AppError {
+    fn from(e: eos_chain::ParseNameError) -> AppError {
         AppError::EosPrimitivesNamesError(e)
     }
 }
 
-impl From<eos_primitives::error::Error> for AppError {
-    fn from(e: eos_primitives::error::Error) -> AppError {
+impl From<eos_chain::error::Error> for AppError {
+    fn from(e: eos_chain::error::Error) -> AppError {
         AppError::EosPrimitivesError(e)
     }
 }

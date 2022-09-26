@@ -2,7 +2,7 @@ use crate::{
     error::AppError,
     types::{Bytes, Result},
 };
-use eos_primitives::Checksum256;
+use eos_chain::Checksum256;
 
 pub fn convert_bytes_to_checksum256(bytes: &Bytes) -> Result<Checksum256> {
     match bytes.len() {

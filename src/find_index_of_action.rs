@@ -2,12 +2,14 @@ use crate::{
     error::AppError,
     state::State,
     types::{EosActionReceipts, Result},
-    utils::convert_bytes_to_checksum256,
 };
-use eos_primitives::{Action as EosAction, Checksum256};
+use eos_chain::{Action as EosAction, Checksum256, Digest};
 
 fn get_digest_from_action(action: &EosAction) -> Result<Checksum256> {
-    convert_bytes_to_checksum256(&action.to_digest())
+    debug!("Getting digest from action: {}", action);
+    let digest = action.digest()?;
+    debug!("Action digest: {}", digest);
+    Ok(digest)
 }
 
 fn get_index_of_action(action: &EosAction, action_receipts: &EosActionReceipts) -> Result<u32> {

@@ -4,16 +4,16 @@ use crate::{
         AuthSequenceJson, AuthSequenceJsons, EosActionReceiptJson, EosActionReceiptJsons, Result,
     },
 };
-use eos_primitives::{
-    AccountName, ActionReceipt as EosActionReceipt, ActionReceipts as EosActionReceipts,
-    AuthSequence, AuthSequences, Checksum256,
+use eos_chain::{
+    utils::flat_map::FlatMap, AccountName, ActionReceipt as EosActionReceipt, Checksum256,
+    UnsignedInt,
 };
 use std::str::FromStr;
 
 pub fn sort_action_receipts_by_global_sequence(
-    action_receipts: &EosActionReceipts,
-) -> EosActionReceipts {
-    let mut sorted = action_receipts.clone();
+    action_receipts: Vec<EosActionReceipt>,
+) -> Vec<EosActionReceipt> {
+    let mut sorted = action_receipts;
     sorted.sort_by(|a, b| a.global_sequence.cmp(&b.global_sequence));
     sorted
 }
@@ -25,27 +25,31 @@ pub fn convert_hex_to_checksum256(hex: &String) -> Result<Checksum256> {
     Ok(Checksum256::from(arr))
 }
 
-fn parse_auth_sequence_json(auth_sequence_json: &AuthSequenceJson) -> Result<AuthSequence> {
-    Ok(AuthSequence::new(
-        &auth_sequence_json.0,
+fn parse_auth_sequence_json(auth_sequence_json: &AuthSequenceJson) -> Result<(AccountName, u64)> {
+    Ok((
+        AccountName::from_str(&auth_sequence_json.0)?,
         auth_sequence_json.1,
-    )?)
+    ))
 }
 
-fn parse_auth_sequence_jsons(auth_sequence_jsons: &AuthSequenceJsons) -> Result<AuthSequences> {
-    auth_sequence_jsons
-        .iter()
-        .map(parse_auth_sequence_json)
-        .collect::<Result<AuthSequences>>()
+fn parse_auth_sequence_jsons(
+    auth_sequence_jsons: &AuthSequenceJsons,
+) -> Result<FlatMap<AccountName, u64>> {
+    Ok(FlatMap::assign(
+        auth_sequence_jsons
+            .iter()
+            .map(parse_auth_sequence_json)
+            .collect::<Result<Vec<(AccountName, u64)>>>()?,
+    ))
 }
 
 fn parse_eos_action_receipt_json(
     eos_action_receipt_json: &EosActionReceiptJson,
 ) -> Result<EosActionReceipt> {
     Ok(EosActionReceipt {
-        abi_sequence: eos_action_receipt_json.abi_sequence,
-        code_sequence: eos_action_receipt_json.code_sequence,
-        recipient: AccountName::from_str(&eos_action_receipt_json.receiver)?,
+        abi_sequence: UnsignedInt::from(eos_action_receipt_json.abi_sequence),
+        code_sequence: UnsignedInt::from(eos_action_receipt_json.code_sequence),
+        receiver: AccountName::from_str(&eos_action_receipt_json.receiver)?,
         act_digest: convert_hex_to_checksum256(&eos_action_receipt_json.act_digest)?,
         global_sequence: eos_action_receipt_json.global_sequence,
         recv_sequence: eos_action_receipt_json.recv_sequence,
@@ -55,17 +59,17 @@ fn parse_eos_action_receipt_json(
 
 pub fn parse_action_receipt_jsons(
     eos_action_receipt_jsons: &EosActionReceiptJsons,
-) -> Result<EosActionReceipts> {
+) -> Result<Vec<EosActionReceipt>> {
     eos_action_receipt_jsons
         .iter()
         .map(parse_eos_action_receipt_json)
-        .collect::<Result<EosActionReceipts>>()
+        .collect::<Result<Vec<EosActionReceipt>>>()
 }
 
 pub fn parse_eos_action_receipt_jsons_and_put_in_state(state: State) -> Result<State> {
     trace!("✔ Parsing EOS action receipts...");
     parse_action_receipt_jsons(&state.get_eos_input_json()?.action_receipts)
-        .map(|receipts| sort_action_receipts_by_global_sequence(&receipts))
+        .map(sort_action_receipts_by_global_sequence)
         .and_then(|receipts| state.add_eos_action_receipts(receipts))
 }
 
@@ -93,12 +97,11 @@ mod tests {
             .and_then(|json| parse_action_receipt_jsons(&json.action_receipts))
             .unwrap();
         let digest_before_sorting =
-            hex::encode(get_merkle_digest_from_action_receipts(&action_receipts));
+            hex::encode(get_merkle_digest_from_action_receipts(&action_receipts).unwrap());
         assert_ne!(digest_before_sorting, expected_result_before_sort);
-        let sorted_action_receipts = sort_action_receipts_by_global_sequence(&action_receipts);
-        let digest_after_sorting = hex::encode(get_merkle_digest_from_action_receipts(
-            &sorted_action_receipts,
-        ));
+        let sorted_action_receipts = sort_action_receipts_by_global_sequence(action_receipts);
+        let digest_after_sorting =
+            hex::encode(get_merkle_digest_from_action_receipts(&sorted_action_receipts).unwrap());
         assert_eq!(digest_after_sorting, expected_result_before_sort);
         assert_ne!(digest_after_sorting, digest_before_sorting);
     }

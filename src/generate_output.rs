@@ -2,6 +2,7 @@ use crate::{
     state::State,
     types::{Output, Result},
 };
+use eos_chain::{Digest, SerializeData};
 use serde_json;
 
 pub fn generate_output_string(state: State) -> Result<String> {
@@ -12,17 +13,19 @@ pub fn generate_output_string(state: State) -> Result<String> {
         block_id: hex::encode(&state.get_eos_block()?.block_id),
         action_index: state.get_proof_index()? as usize,
         action_proof: state.get_merkle_proof()?.to_vec(),
-        action_digest: hex::encode(state.get_eos_action()?.to_digest()),
-        serialized_action: hex::encode(state.get_eos_action()?.serialize()),
+        action_digest: format!("0x{}", state.get_eos_action()?.digest()?),
+        serialized_action: hex::encode(state.get_eos_action()?.to_serialize_data()?),
         action_json: state.get_eos_input_json()?.action.clone(),
         action_receipt_json: state.get_eos_input_json()?.action_receipts
             [state.get_proof_index()? as usize]
             .clone(),
-        action_receipt_digest: hex::encode(
-            state.get_eos_action_receipts()?[state.get_proof_index()? as usize].to_digest(),
+        action_receipt_digest: format!(
+            "0x{}",
+            state.get_eos_action_receipts()?[state.get_proof_index()? as usize].digest()?,
         ),
         serialized_action_receipt: hex::encode(
-            state.get_eos_action_receipts()?[state.get_proof_index()? as usize].serialize(),
+            state.get_eos_action_receipts()?[state.get_proof_index()? as usize]
+                .to_serialize_data()?,
         ),
     })?)
 }

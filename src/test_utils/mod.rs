@@ -8,7 +8,7 @@ use crate::{
     parse_input_json::parse_eos_input_json_string,
     types::{EosActionReceipts, EosBlock, EosInputJson, MerkleProof, Result},
 };
-use eos_primitives::Action as EosAction;
+use eos_chain::Action as EosAction;
 use std::{fs::read_to_string, path::Path};
 
 pub const NUM_SAMPLES: usize = 1;
@@ -35,7 +35,7 @@ pub fn get_sample_eos_block_n(n: usize) -> Result<EosBlock> {
 pub fn get_sample_action_receipts_n(n: usize) -> Result<EosActionReceipts> {
     get_sample_submission_json_n(n)
         .and_then(|json| parse_action_receipt_jsons(&json.action_receipts))
-        .map(|receipts| sort_action_receipts_by_global_sequence(&receipts))
+        .map(sort_action_receipts_by_global_sequence)
 }
 
 pub fn get_sample_action_n(n: usize) -> Result<EosAction> {
