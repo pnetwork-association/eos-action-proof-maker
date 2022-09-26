@@ -36,9 +36,9 @@ pub fn validate_action_receipt_merkle_root(state: State) -> Result<State> {
         .get_eos_action_receipts()
         .and_then(get_merkle_digest_from_action_receipts)
         .and_then(|digest| check_merkle_digest(&digest, &state.get_eos_block()?.action_mroot))
-        .and_then(|_| {
+        .map(|_| {
             info!("✔ Receipts root is valid!");
-            Ok(state)
+            state
         })
 }
 
