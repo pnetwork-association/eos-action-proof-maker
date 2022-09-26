@@ -1,6 +1,6 @@
 [package]
 name = "eos_action_proof_maker"
-version = "1.0.0"
+version = "1.1.0"
 authors = ["Greg Kapka <greg@oraclize.it>"]
 edition = "2018"
 
