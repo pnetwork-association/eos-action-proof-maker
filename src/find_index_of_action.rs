@@ -46,4 +46,14 @@ mod tests {
         let result = get_index_of_action(&action, &action_receipts).unwrap();
         assert_eq!(result, expected_result);
     }
+
+    #[test]
+    fn should_get_index_of_action_2() {
+        let sample_num = 2;
+        let expected_result = 140;
+        let action_receipts = get_sample_action_receipts_n(sample_num).unwrap();
+        let action = get_sample_action_n(sample_num).unwrap();
+        let result = get_index_of_action(&action, &action_receipts).unwrap();
+        assert_eq!(result, expected_result);
+    }
 }
