@@ -4,6 +4,7 @@ pub mod error;
 pub mod find_index_of_action;
 pub mod generate_output;
 pub mod generate_proof;
+pub mod get_action_digest;
 pub mod initialize_logger;
 pub mod parse_cli_args;
 pub mod parse_eos_action;
