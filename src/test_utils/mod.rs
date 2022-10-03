@@ -15,7 +15,7 @@ pub const NUM_SAMPLES: usize = 1;
 pub const MERKLE_PROOF_INDEX: u32 = 3;
 
 pub fn get_sample_submission_string_n(n: usize) -> Result<String> {
-    let path = format!("src/test_utils/sample-block-{}.json", n);
+    let path = format!("src/test_utils/sample-material-{}.json", n);
     match Path::new(&path).exists() {
         true => Ok(read_to_string(path)?),
         false => Err(AppError::Custom(
