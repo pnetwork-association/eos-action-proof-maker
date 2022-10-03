@@ -4,6 +4,9 @@ version = "1.2.0"
 authors = ["Greg Kapka <greg@oraclize.it>"]
 edition = "2021"
 
+[features]
+disable-action-return-value-protocol-feature = []
+
 [dependencies]
 hex = "0.3.2"
 log = "0.4.8"
