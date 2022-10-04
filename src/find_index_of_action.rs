@@ -1,25 +1,19 @@
 use crate::{
     error::AppError,
+    get_action_digest::get_action_digest,
     state::State,
     types::{EosActionReceipts, Result},
 };
-use eos_chain::{Action as EosAction, Checksum256, Digest};
-
-fn get_digest_from_action(action: &EosAction) -> Result<Checksum256> {
-    debug!("Getting digest from action: {}", action);
-    let digest = action.digest()?;
-    debug!("Action digest: {}", digest);
-    Ok(digest)
-}
+use eos_chain::Action as EosAction;
 
 fn get_index_of_action(action: &EosAction, action_receipts: &EosActionReceipts) -> Result<u32> {
     let mut index: Option<u32> = None;
-    let sought_digest = get_digest_from_action(action)?;
+    let sought_digest = get_action_digest(action)?;
     action_receipts
         .iter()
         .enumerate()
         .map(|(i, receipt)| {
-            if receipt.act_digest == sought_digest {
+            if receipt.act_digest.as_bytes() == sought_digest {
                 index = Some(i as u32)
             }
         })
@@ -43,19 +37,20 @@ mod tests {
     use super::*;
     use crate::test_utils::{get_sample_action_n, get_sample_action_receipts_n};
 
-    #[test]
-    fn should_get_digest_from_action() {
-        let expected_result =
-            "364afa1cc13bca5dce1027f089e56889171373f66f5e3e59637251aaaeac4caa".to_string();
-        let action = get_sample_action_n(1).unwrap();
-        let result = get_digest_from_action(&action).unwrap();
-        assert_eq!(result.to_string(), expected_result)
-    }
-
-    #[test]
+    #[cfg(all(test, feature = "disable-action-return-value-protocol-feature"))]
     fn should_get_index_of_action() {
         let sample_num = 1;
         let expected_result = 5;
+        let action_receipts = get_sample_action_receipts_n(sample_num).unwrap();
+        let action = get_sample_action_n(sample_num).unwrap();
+        let result = get_index_of_action(&action, &action_receipts).unwrap();
+        assert_eq!(result, expected_result);
+    }
+
+    #[test]
+    fn should_get_index_of_action_2() {
+        let sample_num = 2;
+        let expected_result = 140;
         let action_receipts = get_sample_action_receipts_n(sample_num).unwrap();
         let action = get_sample_action_n(sample_num).unwrap();
         let result = get_index_of_action(&action, &action_receipts).unwrap();

@@ -76,7 +76,7 @@ Options:
 
 ### :microscope: Example
 
-If you go and look in the __`/example`__ directory you'll find a sample __EOS__ block __JSON__ & a shell script you can run to see how the tool works. First build the tool via __`❍ cargo build --release`__ from the root of thise repo, then run the example in the __`examples`__ directory via: __`❍ ./example.sh`__.
+If you go and look in the __`/example`__ directory you'll find some sample __EOS__ block __JSONs__ & shell scripts you can run to see how the tool works. Run the example via: __`❍ ./example-1.sh`__.
 
 Output of example:
 
@@ -179,6 +179,14 @@ You'll find your binary in the __`./target/release/`__ directory.
 ```
 
 ✘ Could not find action digest in action receipts!
+
+```
+
+ - A recent EOS fork enabled actions to return values, and this tool now defaults to the action digest calculation for these new action types, but _only_ for those action which return _no_ value. For previous behaviour on chains where this EOS protocol feature is not active, build the tool with via:
+
+```
+
+cargo b -r --features=disable-action-return-value-protocol-feature
 
 ```
 

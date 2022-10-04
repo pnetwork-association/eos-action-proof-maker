@@ -1,8 +1,11 @@
 [package]
 name = "eos_action_proof_maker"
-version = "1.2.0"
+version = "1.3.0"
 authors = ["Greg Kapka <greg@oraclize.it>"]
 edition = "2021"
+
+[features]
+disable-action-return-value-protocol-feature = []
 
 [dependencies]
 hex = "0.3.2"
