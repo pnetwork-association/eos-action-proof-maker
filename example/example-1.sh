@@ -10,7 +10,7 @@ cargo b -r
 # Run the example...
 ../target/release/eos_action_proof_maker \
 generate \
---file=./example-1-submission-material.json
+--file=./sample-material-1.json
 
 # Clean up...
 rm -r ./logs
