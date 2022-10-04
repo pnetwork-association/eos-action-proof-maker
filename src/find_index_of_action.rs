@@ -49,7 +49,7 @@ mod tests {
     use super::*;
     use crate::test_utils::{get_sample_action_n, get_sample_action_receipts_n};
 
-    #[cfg(all(test, feature = "disable-action-return-value-protocol-feature"))]
+    #[test]
     fn should_get_index_of_action() {
         let sample_num = 1;
         let expected_result = 5;
