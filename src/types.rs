@@ -1,12 +1,10 @@
 use crate::error::AppError;
-use eos_chain::{Action as EosAction, ActionReceipt as EosActionReceipt};
+use eos_chain::ActionReceipt as EosActionReceipt;
 use std::result;
 
 pub type Byte = u8;
 pub type Bytes = Vec<Byte>;
 pub type MerkleProof = Vec<String>;
-pub type ActionProof = MerkleProof;
-pub type EosActions = Vec<EosAction>;
 pub type Result<T> = result::Result<T, AppError>;
 pub type EosActionReceipts = Vec<EosActionReceipt>;
 pub type AuthSequenceJsons = Vec<AuthSequenceJson>;
@@ -33,8 +31,6 @@ pub struct EosInputJson {
     pub action: EosActionJson,
     pub action_receipts: EosActionReceiptJsons,
 }
-
-pub type ActionTraceJsons = Vec<ActionTraceJson>;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ActionTraceJson {

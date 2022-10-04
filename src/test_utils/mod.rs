@@ -1,3 +1,4 @@
+#![cfg(test)]
 use crate::{
     error::AppError,
     generate_proof::generate_merkle_proof_from_action_receipts,

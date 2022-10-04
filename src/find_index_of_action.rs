@@ -2,28 +2,40 @@ use crate::{
     error::AppError,
     get_action_digest::get_action_digest,
     state::State,
-    types::{EosActionReceipts, Result},
+    types::{Byte, EosActionReceipts, Result},
 };
 use eos_chain::Action as EosAction;
 
-fn get_index_of_action(action: &EosAction, action_receipts: &EosActionReceipts) -> Result<u32> {
-    let mut index: Option<u32> = None;
-    let sought_digest = get_action_digest(action)?;
-    action_receipts
-        .iter()
-        .enumerate()
-        .map(|(i, receipt)| {
-            if receipt.act_digest.as_bytes() == sought_digest {
-                index = Some(i as u32)
-            }
-        })
-        .for_each(drop);
-    match index {
-        Some(idx) => Ok(idx),
-        None => Err(AppError::Custom(
+// NOTE: There exists _first_ in every block a special action in the protocol itself...
+const ON_BLOCK_ACTION_INDEX: u32 = 0;
+
+fn get_index_of_action_digest(
+    action_digest: &[Byte],
+    action_receipts: &EosActionReceipts,
+) -> Result<u32> {
+    let index =
+        action_receipts
+            .iter()
+            .enumerate()
+            .fold(ON_BLOCK_ACTION_INDEX, |mut acc, (i, receipt)| {
+                if receipt.act_digest.as_bytes() == action_digest {
+                    acc = i as u32
+                };
+                acc
+            });
+
+    if index == ON_BLOCK_ACTION_INDEX {
+        Err(AppError::Custom(
             "✘ Could not find action digest in action receipts!".to_string(),
-        )),
+        ))
+    } else {
+        Ok(index)
     }
+}
+
+fn get_index_of_action(action: &EosAction, action_receipts: &EosActionReceipts) -> Result<u32> {
+    get_index_of_action_digest(&get_action_digest(action, false)?, action_receipts)
+        .or_else(|_| get_index_of_action_digest(&get_action_digest(action, true)?, action_receipts))
 }
 
 pub fn find_index_of_action_and_put_in_state(state: State) -> Result<State> {
@@ -37,7 +49,7 @@ mod tests {
     use super::*;
     use crate::test_utils::{get_sample_action_n, get_sample_action_receipts_n};
 
-    #[cfg(all(test, feature = "disable-action-return-value-protocol-feature"))]
+    #[test]
     fn should_get_index_of_action() {
         let sample_num = 1;
         let expected_result = 5;

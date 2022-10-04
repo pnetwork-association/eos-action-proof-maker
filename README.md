@@ -182,13 +182,7 @@ You'll find your binary in the __`./target/release/`__ directory.
 
 ```
 
- - A recent EOS fork enabled actions to return values, and this tool now defaults to the action digest calculation for these new action types, but _only_ for those action which return _no_ value. For previous behaviour on chains where this EOS protocol feature is not active, build the tool with via:
-
-```
-
-cargo b -r --features=disable-action-return-value-protocol-feature
-
-```
+ - A recent EOS fork enabled actions to return values, which changed the way actions were hashed. This tool calculates both ways in order to find the correct action receipt from the set passed to it.
 
 ***
 
@@ -213,3 +207,4 @@ __`❍ cargo test`__
 - [ ] Validate the block header too?
 - [x] Validate the individual actions too?
 - [x] Validate the action at the supplied index w/r/t to it's hex data
+- [ ] Implement full action return value handling in the digest calcualtor

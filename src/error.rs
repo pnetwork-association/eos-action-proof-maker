@@ -1,4 +1,3 @@
-use hex;
 use std::fmt;
 
 #[derive(Debug)]
