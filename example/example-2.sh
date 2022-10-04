@@ -2,6 +2,8 @@
 set -e
 cd "$(dirname -- $0)"
 
+# NOTE: This sample is from a chain where the `action-return-value` protocol feature is ENABLED...
+
 # Build the tool...
 cargo b -r
 
