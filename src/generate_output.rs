@@ -5,7 +5,6 @@ use crate::{
     types::{Output, Result},
 };
 use eos_chain::{Digest, SerializeData};
-use serde_json;
 
 pub fn generate_output_string(state: State) -> Result<String> {
     let action = state.get_eos_action()?;
