@@ -5,7 +5,9 @@ use eos_chain::{Action as EosAction, Digest, NumBytes, SerializeData, UnsignedIn
 pub fn get_action_digest(action: &EosAction) -> Result<Bytes> {
     if cfg!(feature = "disable-action-return-value-protocol-feature") {
         debug!("Using original way to calculate action digest...");
-        Ok(action.digest()?.as_bytes().to_vec())
+        let digest = action.digest()?.as_bytes().to_vec();
+        debug!("Action digest: 0x{}", hex::encode(&digest));
+        Ok(digest)
     } else {
         debug!("Using `action_return_value` protocol feature to calculate action digest...");
         let serialized_action = action.to_serialize_data()?;
@@ -19,14 +21,16 @@ pub fn get_action_digest(action: &EosAction) -> Result<Bytes> {
             // If we support the action return data too, we'll need to include it and its length here.
             vec![0x00]
         ].concat()).to_vec();
-        Ok(sha256::Hash::hash(&vec![hash_1, hash_2].concat()).to_vec())
+        let digest = sha256::Hash::hash(&vec![hash_1, hash_2].concat()).to_vec();
+        debug!("Action digest: 0x{}", hex::encode(&digest));
+        Ok(digest)
     }
 }
 
 fn bitpack_length(data_length: usize) -> Result<Bytes> {
     let unsigned_int = UnsignedInt::from(data_length);
     // NOTE: Arbritrary length here since the fxn requires an arr but we can't declare one with
-    // a non constant value;
+    // a non constant value...
     let mut arr = [0u8; 20];
     unsigned_int.write(&mut arr, &mut 0)?;
     Ok(arr[..unsigned_int.num_bytes()].to_vec())
