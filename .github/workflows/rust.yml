@@ -35,6 +35,12 @@ jobs:
       - name: Run tests
         run: cargo test
 
+      - name: Run example-1
+        run: ./example/example-1.sh
+
+      - name: Run example-2
+        run: ./example/example-2.sh
+
   check_formating_and_clippy:
     runs-on: ubuntu-20.04
     steps:
