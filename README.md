@@ -22,6 +22,17 @@ One key Dan Larrimer quote:
 
 &nbsp;
 
+### Compile the binary
+
+```./docker-cargo.sh build --release```
+
+
+&nbsp;
+
+***
+
+&nbsp;
+
 ### :point_right: Usage:
 
 ```
