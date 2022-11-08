@@ -18,7 +18,10 @@ pub fn get_action_digest(action: &EosAction, action_has_return_value: bool) -> R
         let serialized_action = action.to_serialize_data()?;
         let base_action_num_bytes = 17;
         let authorization_num_bytes = action.authorization.len() * 16;
-        let hash_1 = sha256::Hash::hash(&serialized_action[..base_action_num_bytes + authorization_num_bytes]).to_vec();
+        let hash_1 = sha256::Hash::hash(
+            &serialized_action[..base_action_num_bytes + authorization_num_bytes],
+        )
+        .to_vec();
         let data_length = action.data.len();
         #[rustfmt::skip]
         let hash_2 = sha256::Hash::hash(&[
@@ -121,7 +124,8 @@ mod tests {
                 .unwrap(),
         };
         let result = hex::encode(get_action_digest(&action, true).unwrap());
-        let expected_result = "27c6c28b348d330aa15629b26b15743aaa1733bfda8b09ffaadf1f4ad92c60c7".to_string();
+        let expected_result =
+            "27c6c28b348d330aa15629b26b15743aaa1733bfda8b09ffaadf1f4ad92c60c7".to_string();
         assert_eq!(result, expected_result);
     }
 
@@ -143,7 +147,8 @@ mod tests {
             hex::encode(get_action_digest(&action, true).unwrap()), // Assum the action HAS return value...
             hex::encode(get_action_digest(&action, false).unwrap()), // Assume the action has NO return value...
         ];
-        let expected_result = "af063d81db44ab38f3bfa7b408c8218cda2e112eaa2820b5b88fb7eb181635e7".to_string();
+        let expected_result =
+            "af063d81db44ab38f3bfa7b408c8218cda2e112eaa2820b5b88fb7eb181635e7".to_string();
         assert!(results.contains(&expected_result));
     }
 }
